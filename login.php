@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Fetch user from the correct table
-    $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username AND role = :role LIMIT 1");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username AND role = :role LIMIT 1");
     $stmt->execute([
         ":username" => $username,
         ":role" => $role
