@@ -677,3 +677,15 @@
 2026-01-02 12:11 pm - func_name = DisplayCustomer
 2026-01-02 1:09 pm - func_name = DisplayCustomer
 >>>>>>> d8b50dd3bf4c2b3cca1e1d17df4fcfec34ebc008
+2026-01-04 12:16 pm - Function 'AddCustomer' not allowed
+2026-01-04 12:16 pm - Function 'DisplayCustomer' not allowed
+2026-01-04 3:23 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:24 pm - POST DATA: {"customerID":"","firstName":"Rafael","lastName":"Pimpolio","phone":"09754153780","email":"akoadipadi@gmail.com","barangay":"Bonifacio","city":"San Fernando","province":"Camarines Sur","postalCode":"4415","username":"rafael","password":"rafael12345","func_name":"AddCustomer"}
+2026-01-04 3:24 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:38 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:38 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:38 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:38 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:39 pm - POST DATA: {"customerID":"","firstName":"Rafael","lastName":"Pimpolio","phone":"09754153780","email":"akoadipadi@gmail.com","barangay":"Bonifacio","city":"San Fernando","province":"Camarines Sur","postalCode":"4415","username":"rafael","password":"rafael12345","func_name":"AddCustomer"}
+2026-01-04 3:39 pm - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-04 3:42 pm - POST DATA: {"func_name":"DisplayCustomer"}

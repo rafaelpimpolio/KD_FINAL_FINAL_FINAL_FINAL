@@ -17,6 +17,6 @@ const goToCustomerForm = document.getElementById("goToCustomerForm");
 if (goToCustomerForm) {
     goToCustomerForm.addEventListener("click", () => {
         // Make sure the path is correct relative to this file
-        window.location.href = "Pimpolio_Form/customer.html";
+        window.location.href = "Pimpolio_Form/customer.php";
     });
 }
