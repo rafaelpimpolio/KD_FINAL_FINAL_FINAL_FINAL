@@ -1,16 +1,23 @@
 <?php
 class Database
 {
+<<<<<<< HEAD
     // --- Database Credentials ---
-    private static $dbName = 'kd_database';  
+=======
+>>>>>>> d8b50dd3bf4c2b3cca1e1d17df4fcfec34ebc008
+    private static $dbName = 'kd_sportswear';
     private static $dbHost = 'localhost';
     private static $dbUsername = 'root';
     private static $dbPassword = '';
 
-    // --- PDO Connection Holder ---
     private static $cont = null;
 
+<<<<<<< HEAD
+    // -----------------------------
     //  CONNECT TO DATABASE (SINGLETON)
+    // -----------------------------
+=======
+>>>>>>> d8b50dd3bf4c2b3cca1e1d17df4fcfec34ebc008
     public static function Connection()
     {
         if (self::$cont === null) {
@@ -22,63 +29,34 @@ class Database
                 );
                 self::$cont->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                die("Database Connection Error: " . $e->getMessage());
+                self::WriteLog("DB Connection Error: " . $e->getMessage());
+                die("Database connection failed.");
             }
         }
         return self::$cont;
     }
+<<<<<<< HEAD
 
-    //  GET A SINGLE RECORD
-    public static function GetOneData($pdo, $sql)
-    {
-        try {
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            echo "Error fetching record: " . $e->getMessage();
-            return false;
-        }
-    }
-
-    //  GET ALL RECORDS
-    public static function GetAllData($pdo, $sql)
-    {
-        try {
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            echo "Error fetching data: " . $e->getMessage();
-            return [];
-        }
-    }
-
-    //  INSERT, UPDATE, DELETE
+    // -----------------------------
+    //  EXECUTE INSERT / UPDATE / DELETE
+    // -----------------------------
     public static function ManageRecord($pdo, $sql, $params = [])
     {
-        try {
-            $stmt = $pdo->prepare($sql);
-            return $stmt->execute($params);
-        } catch (Exception $e) {
-            self::WriteLog("DB Error: " . $e->getMessage());
-            throw $e;  // re-throw so calling function can catch
-        }
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 
-    //  LOG ALL POST DATA
+    // -----------------------------
+    //  LOG POST DATA
+    // -----------------------------
     public static function WritePost($post)
     {
-        foreach ($post as $key => $value) {
-            if (is_array($value)) {
-                self::WriteLog($key . ' = ' . json_encode($value));
-            } else {
-                self::WriteLog($key . ' = ' . $value);
-            }
-        }
+        self::WriteLog("POST DATA: " . json_encode($post));
     }
 
+    // -----------------------------
     //  WRITE LOG TO log.txt
+    // -----------------------------
     public static function WriteLog($msg)
     {
         $path = "log.txt";
@@ -86,5 +64,7 @@ class Database
         fwrite($file, date("Y-m-d g:i a") . " - " . $msg . "\n");
         fclose($file);
     }
+=======
+>>>>>>> d8b50dd3bf4c2b3cca1e1d17df4fcfec34ebc008
 }
 ?>

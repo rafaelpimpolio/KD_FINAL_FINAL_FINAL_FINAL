@@ -449,6 +449,22 @@
 2025-12-30 11:00 am - DB Connection Error: SQLSTATE[HY000] [1049] Unknown database 'kd_database'
 2025-12-30 11:17 am - DB Connection Error: SQLSTATE[HY000] [1049] Unknown database 'kd_database'
 2025-12-30 11:17 am - DB Connection Error: SQLSTATE[HY000] [1049] Unknown database 'kd_database'
+<<<<<<< HEAD
+2026-01-03 2:28 am - POST DATA: {"customerID":"","firstName":"Rafael","lastName":"Pimpolio","phone":"09754153780","email":"akoadipadi@gmail.com","barangay":"Bonifacio","city":"San Fernando","province":"secret","postalCode":"4415","func_name":"CreateCustomerAccount"}
+2026-01-03 2:28 am - Function 'CreateCustomerAccount' not allowed
+2026-01-03 6:17 am - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-03 6:17 am - Function 'DisplayCustomer' not allowed
+2026-01-03 6:17 am - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-03 6:17 am - Function 'DisplayCustomer' not allowed
+2026-01-03 6:18 am - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-03 6:18 am - Function 'DisplayCustomer' not allowed
+2026-01-03 6:19 am - POST DATA: {"customerID":"","firstName":"asdfghjkl;","lastName":"asfsghjkljly4t","phone":"09123456788","email":"qwer@gamil.com","barangay":"Bonifacio","city":"samo","province":"samo","postalCode":"4415","func_name":"AddCustomer"}
+2026-01-03 6:19 am - Function 'AddCustomer' not allowed
+2026-01-03 6:19 am - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-03 6:19 am - Function 'DisplayCustomer' not allowed
+2026-01-03 6:28 am - POST DATA: {"func_name":"DisplayCustomer"}
+2026-01-03 6:28 am - Function 'DisplayCustomer' not allowed
+=======
 2025-12-30 1:20 pm - DB Connection Error: SQLSTATE[HY000] [1049] Unknown database 'kd_database'
 2025-12-30 1:20 pm - DB Connection Error: SQLSTATE[HY000] [1049] Unknown database 'kd_database'
 2025-12-30 1:20 pm - DB Connection Error: SQLSTATE[HY000] [1049] Unknown database 'kd_database'
@@ -630,61 +646,34 @@
 2026-01-01 12:35 pm - func_name = DisplayCustomer
 2026-01-01 12:52 pm - func_name = DisplayCustomer
 2026-01-01 12:52 pm - func_name = DisplayCustomer
-2026-01-02 5:29 am - func_name = DisplayCustomer
-2026-01-02 5:30 am - func_name = DeleteCustomer
-2026-01-02 5:30 am - customerID = 13
-2026-01-02 5:30 am - func_name = DisplayCustomer
-2026-01-02 5:40 am - func_name = DisplayCustomer
-2026-01-02 5:46 am - func_name = DisplayCustomer
-2026-01-02 5:47 am - customerID = 
-2026-01-02 5:47 am - firstName = Rafael
-2026-01-02 5:47 am - lastName = Pimpolio
-2026-01-02 5:47 am - phone = 09754153780
-2026-01-02 5:47 am - email = akoadipadi@gmail.com
-2026-01-02 5:47 am - barangay = Bonifacio
-2026-01-02 5:47 am - city = San Fernando
-2026-01-02 5:47 am - province = Camarines Sur
-2026-01-02 5:47 am - postalCode = 4415
-2026-01-02 5:47 am - func_name = AddCustomer
-2026-01-02 5:47 am - func_name = DisplayCustomer
-2026-01-02 5:48 am - customerID = 4
-2026-01-02 5:48 am - firstName = Rem
-2026-01-02 5:48 am - lastName = Pimpolio
-2026-01-02 5:48 am - phone = 09754153780
-2026-01-02 5:48 am - email = akoadipadi@gmail.com
-2026-01-02 5:48 am - barangay = Bonifacio
-2026-01-02 5:48 am - city = San Fernando
-2026-01-02 5:48 am - province = Camarines Sur
-2026-01-02 5:48 am - postalCode = 4410
-2026-01-02 5:48 am - func_name = UpdateCustomer
-2026-01-02 5:48 am - func_name = DisplayCustomer
-2026-01-02 5:50 am - func_name = DeleteCustomer
-2026-01-02 5:50 am - customerID = 14
-2026-01-02 5:50 am - func_name = DisplayCustomer
-2026-01-02 5:51 am - func_name = DeleteCustomer
-2026-01-02 5:51 am - customerID = 12
-2026-01-02 5:51 am - func_name = DisplayCustomer
-2026-01-04 11:24 am - func_name = DisplayCustomer
-2026-01-04 11:24 am - func_name = DisplayCustomer
-2026-01-04 11:26 am - customerID = 
-2026-01-04 11:26 am - firstName = Rafael 
-2026-01-04 11:26 am - lastName = Pimpolio
-2026-01-04 11:26 am - phone = 09754153780
-2026-01-04 11:26 am - email = akoadipadi@gmail.com
-2026-01-04 11:26 am - barangay = Bonifacio
-2026-01-04 11:26 am - city = San Fernando
-2026-01-04 11:26 am - province = Camarines Sur
-2026-01-04 11:26 am - postalCode = 4415
-2026-01-04 11:26 am - func_name = AddCustomer
-2026-01-04 11:26 am - func_name = DisplayCustomer
-2026-01-04 11:26 am - customerID = 15
-2026-01-04 11:26 am - firstName = Rafael
-2026-01-04 11:26 am - lastName = Pimpolio
-2026-01-04 11:26 am - phone = 09754153780
-2026-01-04 11:26 am - email = akoadipadi@gmail.com
-2026-01-04 11:26 am - barangay = Bonifacio
-2026-01-04 11:26 am - city = San Fernando
-2026-01-04 11:26 am - province = Camarines Sur
-2026-01-04 11:26 am - postalCode = 4413
-2026-01-04 11:26 am - func_name = UpdateCustomer
-2026-01-04 11:26 am - func_name = DisplayCustomer
+2026-01-02 8:10 am - func_name = DisplayCustomer
+2026-01-02 8:28 am - func_name = DisplayCustomer
+2026-01-02 9:15 am - func_name = DisplayCustomer
+2026-01-02 9:15 am - func_name = DisplayCustomer
+2026-01-02 9:15 am - func_name = DeleteCustomer
+2026-01-02 9:15 am - customerID = 11
+2026-01-02 9:15 am - func_name = DisplayCustomer
+2026-01-02 9:15 am - func_name = DeleteCustomer
+2026-01-02 9:15 am - customerID = 10
+2026-01-02 9:15 am - func_name = DisplayCustomer
+2026-01-02 9:15 am - func_name = DeleteCustomer
+2026-01-02 9:15 am - customerID = 4
+2026-01-02 9:15 am - func_name = DisplayCustomer
+2026-01-02 9:17 am - func_name = DisplayCustomer
+2026-01-02 9:17 am - func_name = DisplayCustomer
+2026-01-02 9:20 am - func_name = DisplayCustomer
+2026-01-02 9:53 am - func_name = DisplayCustomer
+2026-01-02 9:53 am - func_name = DisplayCustomer
+2026-01-02 9:53 am - func_name = DisplayCustomer
+2026-01-02 9:53 am - func_name = DisplayCustomer
+2026-01-02 9:54 am - func_name = DisplayCustomer
+2026-01-02 9:56 am - func_name = DisplayCustomer
+2026-01-02 9:57 am - func_name = DisplayCustomer
+2026-01-02 10:42 am - func_name = DisplayCustomer
+2026-01-02 10:43 am - func_name = DisplayCustomer
+2026-01-02 10:43 am - func_name = DisplayCustomer
+2026-01-02 10:51 am - func_name = DisplayCustomer
+2026-01-02 11:59 am - func_name = DisplayCustomer
+2026-01-02 12:11 pm - func_name = DisplayCustomer
+2026-01-02 1:09 pm - func_name = DisplayCustomer
+>>>>>>> d8b50dd3bf4c2b3cca1e1d17df4fcfec34ebc008
