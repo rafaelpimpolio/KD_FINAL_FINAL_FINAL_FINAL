@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "login_signup_connect.php"; // DB connection
+require_once "login_signup_connect.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"]);
@@ -11,8 +11,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         die("All fields are required.");
     }
 
-    // Fetch user from the correct table
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username AND role = :role LIMIT 1");
+    $stmt = $conn->prepare("
+        SELECT 
+            u.user_id,
+            u.username,
+            u.password_hash,
+            u.role,
+            c.customer_id
+        FROM users u
+        LEFT JOIN customer c ON c.user_id = u.user_id
+        WHERE u.username = :username
+          AND u.role = :role
+        LIMIT 1
+    ");
+
+    /* ✅ THIS WAS MISSING */
     $stmt->execute([
         ":username" => $username,
         ":role" => $role
@@ -21,28 +34,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        die("Invalid username or role."); // triggers if user not found
+        die("Invalid username or role.");
     }
-    
-    // Verify password
+
     if (!password_verify($password, $user["password_hash"])) {
-        die("Invalid password."); // triggers if wrong password
+        die("Invalid password.");
     }
 
-    // Optional: check status
-    if (isset($user["status"]) && $user["status"] !== "active") {
-        die("Your account is inactive. Contact admin.");
-    }
-
-    // Login successful → store session
     $_SESSION["username"] = $user["username"];
-    $_SESSION["role"] = $user["role"];
+    $_SESSION["role"]     = $user["role"];
+    $_SESSION["user_id"]  = $user["user_id"];
 
-    // Redirect
     if ($role === "customer") {
+        if (empty($user["customer_id"])) {
+            die("Customer profile not found. Please contact admin.");
+        }
+        $_SESSION["customer_id"] = $user["customer_id"];
         header("Location: Balatan_Form/inquiry.html");
         exit;
-    } else if ($role === "admin") {
+    }
+
+    if ($role === "admin") {
         header("Location: Magan_Form/employee_to_inquiry_order.php");
         exit;
     }
