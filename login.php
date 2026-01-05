@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "depotaconnect.php"; // DB connection
+require_once "login_signup_connect.php"; // DB connection
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"]);
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($role === "customer") {
         header("Location: Balatan_Form/inquiry.html");
         exit;
-    } else if ($role === "employee") {
+    } else if ($role === "admin") {
         header("Location: Magan_Form/employee_to_inquiry_order.html");
         exit;
     }
