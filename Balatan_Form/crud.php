@@ -16,7 +16,7 @@ if (function_exists($func_name)) {
 function DisplayRecord()
 {
     global $pdo;
-    $sql = "SELECT * FROM kd_form ORDER BY id DESC";
+    $sql = "SELECT * FROM inquiry ORDER BY id DESC";
     echo json_encode(Database::GetAllData($pdo, $sql));
 }
 
@@ -36,13 +36,21 @@ function AddRecord()
         'otherService'
     ];
 
-    $hasSelection = false;
-    foreach ($dropdownFields as $field) {
-        if (!empty($_POST[$field])) {
-            $hasSelection = true;
-            break;
-        }
-    }
+    $hasSelection =
+        !empty($_POST['jerseySando']) ||
+        !empty($_POST['jerseyNeck']) ||
+        !empty($_POST['tshirt']) ||
+        !empty($_POST['poloSize']) ||
+        !empty($_POST['others']) ||
+        !empty($_POST['jerseyShort']) ||
+        !empty($_POST['sublimationDTF']) ||
+        !empty($_POST['otherService']) ||
+        !empty($_POST['materialType']) ||
+        !empty($_POST['colorSelection']) ||
+        !empty($_POST['jerseySandoSize']) ||
+        !empty($_POST['tshirtSize']) ||
+        !empty($_POST['shortSize']);
+
 
     if (!$hasSelection) {
         echo json_encode([
@@ -68,38 +76,77 @@ function AddRecord()
 
     $materialType = $_POST['materialType'] ?? '';
 
-    $sql = "INSERT INTO kd_form (
-        customer, customerFile, jerseySando, jerseyNeck, jerseySandoSize,
-        longsleeves, tshirt, tshirtSize, poloSize, others,
-        jerseyShort, shortSize, joggingPants, warmer,
-        sublimationDTF, otherService, colorSelection, materialType, created_at
-    ) VALUES (
-        :customer, :customerFile, :jerseySando, :jerseyNeck, :jerseySandoSize,
-        :longsleeves, :tshirt, :tshirtSize, :poloSize, :others,
-        :jerseyShort, :shortSize, :joggingPants, :warmer,
-        :sublimationDTF, :otherService, :colorSelection, :materialType, NOW()
-    )";
+$sql = "INSERT INTO inquiry (
+    customer_id,
+    customer_comment,
+    customer_file,
+    jersey_sando,
+    jersey_neck,
+    jersey_sando_size,
+    longsleeves,
+    tshirt,
+    tshirt_size,
+    polo_size,
+    others,
+    jersey_short,
+    short_size,
+    jogging_pants,
+    warmer,
+    sublimation_dtf,
+    other_service,
+    material_type,
+    colors
+) VALUES (
+    :customer_id,
+    :customer_comment,
+    :customer_file,
+    :jersey_sando,
+    :jersey_neck,
+    :jersey_sando_size,
+    :longsleeves,
+    :tshirt,
+    :tshirt_size,
+    :polo_size,
+    :others,
+    :jersey_short,
+    :short_size,
+    :jogging_pants,
+    :warmer,
+    :sublimation_dtf,
+    :other_service,
+    :material_type,
+    :colors
+)";
 
-    Database::ManageRecord($pdo, $sql, [
-        ':customer' => $_POST['customer'] ?? '',
-        ':customerFile' => $customerFile,
-        ':jerseySando' => $_POST['jerseySando'] ?? '',
-        ':jerseyNeck' => $_POST['jerseyNeck'] ?? '',
-        ':jerseySandoSize' => $_POST['jerseySandoSize'] ?? '',
-        ':longsleeves' => $_POST['longsleeves'] ?? '',
-        ':tshirt' => $_POST['tshirt'] ?? '',
-        ':tshirtSize' => $_POST['tshirtSize'] ?? '',
-        ':poloSize' => $_POST['poloSize'] ?? '',
-        ':others' => $_POST['others'] ?? '',
-        ':jerseyShort' => $_POST['jerseyShort'] ?? '',
-        ':shortSize' => $_POST['shortSize'] ?? '',
-        ':joggingPants' => $_POST['joggingPants'] ?? '',
-        ':warmer' => $_POST['warmer'] ?? '',
-        ':sublimationDTF' => $_POST['sublimationDTF'] ?? '',
-        ':otherService' => $_POST['otherService'] ?? '',
-        ':colorSelection' => $colorSelection,
-        ':materialType' => $materialType
-    ]);
+
+Database::ManageRecord($pdo, $sql, [
+    ':customer_id'        => $_POST['customer_id'],
+    ':customer_comment'   => $_POST['customer_comment'] ?? '',
+    ':customer_file'      => $customerFile,
+
+    ':jersey_sando'       => $_POST['jerseySando'] ?? '',
+    ':jersey_neck'        => $_POST['jerseyNeck'] ?? '',
+    ':jersey_sando_size'  => $_POST['jerseySandoSize'] ?? '',
+    ':longsleeves'        => $_POST['longsleeves'] ?? '',
+    ':tshirt'             => $_POST['tshirt'] ?? '',
+    ':tshirt_size'        => $_POST['tshirtSize'] ?? '',
+    ':polo_size'          => $_POST['poloSize'] ?? '',
+    ':others'             => $_POST['others'] ?? '',
+
+    ':jersey_short'       => $_POST['jerseyShort'] ?? '',
+    ':short_size'         => $_POST['shortSize'] ?? '',
+    ':jogging_pants'      => $_POST['joggingPants'] ?? '',
+
+    ':warmer'             => $_POST['warmer'] ?? '',
+    ':sublimation_dtf'    => $_POST['sublimationDTF'] ?? '',
+    ':other_service'      => $_POST['otherService'] ?? '',
+
+    ':material_type'      => $_POST['materialType'] ?? '',
+    ':colors'             => isset($_POST['colorSelection'])
+                              ? implode(',', $_POST['colorSelection'])
+                              : ''
+]);
+
 
     echo json_encode(["status" => "success", "message" => "Record added successfully."]);
 }
@@ -125,7 +172,7 @@ function UpdateRecord()
         move_uploaded_file($_FILES['customerFile']['tmp_name'], $customerFile);
     }
 
-    $sql = "UPDATE kd_form SET
+    $sql = "UPDATE inquiry SET
         customer = :customer,
         customerFile = IF(:customerFile = '', customerFile, :customerFile),
         jerseySando = :jerseySando,
@@ -177,7 +224,7 @@ function DeleteRecord()
     global $pdo;
     Database::ManageRecord(
         $pdo,
-        "DELETE FROM kd_form WHERE id = :id",
+        "DELETE FROM inquiry WHERE id = :id",
         [':id' => $_POST['id']]
     );
     echo json_encode(["status" => "success", "message" => "Record deleted"]);
@@ -188,7 +235,7 @@ function GetRecord()
 {
     global $pdo;
 
-    $stmt = $pdo->prepare("SELECT * FROM kd_form WHERE id = :id");
+    $stmt = $pdo->prepare("SELECT * FROM inquiry WHERE id = :id");
     $stmt->execute([':id' => $_POST['id']]);
     echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
 }

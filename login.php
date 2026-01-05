@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!$user) {
         die("Invalid username or role."); // triggers if user not found
     }
-
+    
     // Verify password
     if (!password_verify($password, $user["password_hash"])) {
         die("Invalid password."); // triggers if wrong password
