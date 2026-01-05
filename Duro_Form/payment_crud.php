@@ -40,7 +40,7 @@ function handleCreate() {
         $balance             = floatval($_POST['balance']);
 
         // Check duplicate payment reference
-        $checkSql = "SELECT payment_id FROM payments WHERE payment_reference = ?";
+        $checkSql = "SELECT payment_id FROM payment WHERE payment_reference = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("s", $payment_reference);
         $checkStmt->execute();
@@ -53,7 +53,7 @@ function handleCreate() {
         }
         $checkStmt->close();
 
-        $sql = "INSERT INTO payments
+        $sql = "INSERT INTO payment
                 (transaction_id, payment_reference, transaction_status, method_payment, payment_date, amount, balance)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -84,7 +84,7 @@ function handleCreate() {
 function handleRead() {
     global $conn;
 
-    $sql = "SELECT * FROM payments ORDER BY payment_id DESC";
+    $sql = "SELECT * FROM payment ORDER BY payment_id DESC";
     $result = $conn->query($sql);
 
     $html = '';
@@ -126,7 +126,7 @@ function handleEditForm() {
     }
 
     $id = intval($_GET['id']);
-    $sql = "SELECT * FROM payments WHERE payment_id = ?";
+    $sql = "SELECT * FROM payment WHERE payment_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -229,7 +229,7 @@ function handleUpdate() {
         $amount             = floatval($_POST['amount']);
         $balance            = floatval($_POST['balance']);
 
-        $sql = "UPDATE payments SET
+        $sql = "UPDATE payment SET
                 transaction_id=?, payment_reference=?, transaction_status=?, method_payment=?,
                 payment_date=?, amount=?, balance=?
                 WHERE payment_id=?";
@@ -265,7 +265,7 @@ function handleDelete() {
     if (isset($_GET['id'])) {
         $id = intval($_GET['id']);
 
-        $sql = "DELETE FROM payments WHERE payment_id = ?";
+        $sql = "DELETE FROM payment WHERE payment_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
 
