@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: Balatan_Form/inquiry.html");
         exit;
     } else if ($role === "admin") {
-        header("Location: Magan_Form/employee_to_inquiry_order.html");
+        header("Location: Magan_Form/employee_to_inquiry_order.php");
         exit;
     }
 }
