@@ -1,5 +1,4 @@
 <?php
-// account.php
 
 $host = "localhost";
 $dbname = "kd_sportswear";

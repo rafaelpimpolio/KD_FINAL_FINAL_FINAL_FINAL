@@ -4,7 +4,6 @@ require "connect.php";
 header('Content-Type: application/json');
 
 $pdo = Database::Connection();
-
 $func_name = $_POST['func_name'] ?? 'AddRecord';
 
 if (function_exists($func_name)) {
@@ -19,19 +18,14 @@ if (function_exists($func_name)) {
  * Admin sees all, customer sees only theirs
  * =========================
  */
-function DisplayRecord()
-{
+function DisplayRecord() {
     global $pdo;
 
     if ($_SESSION['role'] === 'customer') {
-        // Customer sees only their own inquiries
-        $sql = "SELECT * FROM inquiry
-                WHERE customer_id = :customer_id
-                ORDER BY id DESC";
+        $sql = "SELECT * FROM inquiry WHERE customer_id = :customer_id ORDER BY id DESC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':customer_id' => $_SESSION['customer_id']]);
     } else {
-        // Admin sees all inquiries
         $sql = "SELECT * FROM inquiry ORDER BY id DESC";
         $stmt = $pdo->query($sql);
     }
@@ -45,11 +39,9 @@ function DisplayRecord()
  * Customer_id is set from session
  * =========================
  */
-function AddRecord()
-{
+function AddRecord() {
     global $pdo;
 
-    // Validate at least one selection exists
     $hasSelection =
         !empty($_POST['jerseySando']) ||
         !empty($_POST['jerseyNeck']) ||
@@ -66,14 +58,10 @@ function AddRecord()
         !empty($_POST['shortSize']);
 
     if (!$hasSelection) {
-        echo json_encode([
-            "status" => "error",
-            "message" => "At least one dropdown must be selected."
-        ]);
+        echo json_encode(["status" => "error", "message" => "At least one dropdown must be selected."]);
         return;
     }
 
-    // Handle file upload
     $customerFile = '';
     if (!empty($_FILES['customerFile']['name']) && $_FILES['customerFile']['error'] === 0) {
         $targetDir = "uploads/";
@@ -82,9 +70,7 @@ function AddRecord()
         move_uploaded_file($_FILES['customerFile']['tmp_name'], $customerFile);
     }
 
-    $colorSelection = isset($_POST['colorSelection'])
-        ? implode(',', $_POST['colorSelection'])
-        : '';
+    $colorSelection = isset($_POST['colorSelection']) ? implode(',', $_POST['colorSelection']) : '';
 
     $sql = "INSERT INTO inquiry (
         customer_id, customer_comment, customer_file,
@@ -128,12 +114,9 @@ function AddRecord()
 /**
  * =========================
  * UPDATE RECORD
- * Customers can only update their own records
- * Admin can update any
  * =========================
  */
-function UpdateRecord()
-{
+function UpdateRecord() {
     global $pdo;
 
     $customerFile = '';
@@ -144,7 +127,6 @@ function UpdateRecord()
         move_uploaded_file($_FILES['customerFile']['tmp_name'], $customerFile);
     }
 
-    // Role-based condition
     $where = "id = :id";
     $params = [':id' => $_POST['id']];
 
@@ -196,18 +178,15 @@ function UpdateRecord()
     WHERE $where";
 
     Database::ManageRecord($pdo, $sql, $params);
-
     echo json_encode(["status" => "success", "message" => "Record updated"]);
 }
 
 /**
  * =========================
  * DELETE RECORD
- * Customers can delete only their own
  * =========================
  */
-function DeleteRecord()
-{
+function DeleteRecord() {
     global $pdo;
 
     $where = "id = :id";
@@ -227,11 +206,9 @@ function DeleteRecord()
 /**
  * =========================
  * GET SINGLE RECORD
- * Customers can only access their own
  * =========================
  */
-function GetRecord()
-{
+function GetRecord() {
     global $pdo;
 
     $sql = "SELECT * FROM inquiry WHERE id = :id";

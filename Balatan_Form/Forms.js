@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(row => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td>${row.customer || ""}</td>
-            <td>${row.jerseySando || ""}, ${row.jerseyNeck || ""}, ${row.tshirt || ""}</td>
-            <td>${row.jerseyShort || ""}</td>
-            <td>${row.otherService || ""}</td>
-            <td>${row.colorSelection || ""}</td>
-            <td>${row.materialType || ""}</td>
+            <td>${row.customer_comment || ""}</td>
+            <td>${row.jersey_sando || ""}, ${row.jersey_neck || ""}, ${row.tshirt || ""}</td>
+            <td>${row.jersey_short || ""}</td>
+            <td>${row.other_service || ""}</td>
+            <td>${row.colors || ""}</td>
+            <td>${row.material_type || ""}</td>
             <td>
               <button class="btn-edit" onclick="editRecord(${row.id})">Edit</button>
               <button class="btn-delete" onclick="deleteRecord(${row.id})">Delete</button>
@@ -132,12 +132,15 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(res => res.json())
       .then(row => {
         document.getElementById("recordId").value = row.id;
-        document.getElementById("customer").value = row.customer || "";
+        document.getElementById("customer").value = row.customer_comment || "";
 
         dropdownIds.forEach(id => {
           const el = document.getElementById(id);
           if (el) {
-            el.value = row[id] || "";
+            // Use snake_case mapping
+            const dbKey = id
+              .replace(/[A-Z]/g, letter => "_" + letter.toLowerCase());
+            el.value = row[dbKey] || "";
             el.classList.toggle("selected-option", el.value !== "");
           }
         });
@@ -149,15 +152,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document
           .querySelectorAll("input[name='colorSelection[]']")
           .forEach(cb => {
-            cb.checked = row.colorSelection
-              ? row.colorSelection.split(",").includes(cb.value)
+            cb.checked = row.colors
+              ? row.colors.split(",").includes(cb.value)
               : false;
           });
 
         document
           .querySelectorAll("input[name='materialType']")
           .forEach(radio => {
-            radio.checked = radio.value === row.materialType;
+            radio.checked = radio.value === row.material_type;
           });
 
         window.scrollTo({ top: 0, behavior: "smooth" });
