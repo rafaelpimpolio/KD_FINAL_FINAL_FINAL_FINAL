@@ -18,6 +18,7 @@
                      <li><a href="../Magan_Form/employee_to_inquiry_order.php" class="nav-link">Inquiry List</a></li>
                      <li><a href="../Valle_Form/orders.php" class="nav-link">Order List</a></li>
                      <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
+                     <li><a href="../account/account.php" class="nav-link">Account</a></li>
             </ul>
             <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
                 <span id="menuIcon">☰</span>
