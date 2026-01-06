@@ -26,6 +26,14 @@ if($action == 'read'){
                        " | T-shirt: ".$row['tshirt'].", ".$row['tshirt_size'].
                        " | Shorts: ".$row['jersey_short'].", ".$row['short_size'];
 
+            // Decide action buttons
+            $actionBtns = "";
+            if($row['status'] === 'APPROVED'){
+                $actionBtns .= "<button class='btn btn-success btn-sm me-1' onclick='proceedToOrder({$row['inquiry_id']})'>Proceed to Order</button>";
+            }
+            $actionBtns .= "<button class='btn btn-info btn-sm me-1' onclick='openEditModal(".json_encode($row).")'>Edit</button>";
+            $actionBtns .= "<button class='btn btn-danger btn-sm' onclick='deleteInquiry({$row['inquiry_id']})'>Delete</button>";
+
             echo "<tr>
                 <td>{$row['inquiry_id']}</td>
                 <td>{$row['customer_id']}</td>
@@ -38,16 +46,14 @@ if($action == 'read'){
                 <td>{$row['created_at']}</td>
                 <td>".($row['customer_file'] ? "<a href='uploads/{$row['customer_file']}' target='_blank'>View</a>" : 'No file')."</td>
                 <td class='action-buttons'>
-                    <button class='btn btn-info btn-sm' onclick='openEditModal(".json_encode($row).")'>Edit</button>
-                    <button class='btn btn-danger btn-sm' onclick='deleteInquiry({$row['inquiry_id']})'>Delete</button>
+                    $actionBtns
                 </td>
             </tr>";
         }
     } else {
         echo "<tr><td colspan='11' class='text-center'>No inquiries found</td></tr>";
     }
-}
-elseif($action == 'update'){
+} elseif($action == 'update'){
     $id = intval($_POST['inquiry_id']);
     $customer_id = $_SESSION['customer_id'] ?? 0;
 

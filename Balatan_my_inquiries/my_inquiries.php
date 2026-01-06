@@ -291,6 +291,15 @@ $(document).ready(function(){
     });
 });
 
+function proceedToOrder(inquiryId){
+    if(!confirm('Do you want to convert this inquiry into an order?')) return;
+
+    $.post('../orders/orders_crud.php', {action:'create_from_inquiry', inquiry_id: inquiryId}, function(res){
+        alert(res);
+        loadInquiries(); // refresh table
+    });
+}
+
 </script>
 </body>
 </html>

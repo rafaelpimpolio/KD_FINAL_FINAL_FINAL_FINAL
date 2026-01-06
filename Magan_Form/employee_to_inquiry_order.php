@@ -32,7 +32,7 @@
         <table class="table table-striped table-bordered" id="inquiryTable">
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
+                    <th>Inquiry ID</th>
                     <th>Customer ID</th>
                     <th>Order Details</th>
                     <th>Material</th>
@@ -74,6 +74,7 @@
             <select name="status" id="edit_status" class="form-control">
               <option value="PENDING">PENDING</option>
               <option value="APPROVED">APPROVED</option>
+              <option value="DISAPPROVED">DISAPPROVED</option>
             </select>
           </div>
 

@@ -74,6 +74,7 @@
                 <label for="edit_order_status" class="form-label">Status</label>
                 <select name="status" id="edit_order_status" class="form-control">
                     <option value="PENDING">PENDING</option>
+                    <option value="PAYMENT">FOR PAYMENT</option>
                     <option value="PROCESSING">PROCESSING</option>
                     <option value="READY FOR PICKUP">READY FOR PICKUP</option>
                     <option value="COMPLETED">COMPLETED</option>
