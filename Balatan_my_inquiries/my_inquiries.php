@@ -7,6 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="inquiry_style.css">
 <link rel="stylesheet" href="../account/nav.css">
+<link rel="stylesheet" href="my_inquiries.css">
 
 </head>
 <body>
@@ -57,7 +58,7 @@
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <form id="editForm" enctype="multipart/form-data">
@@ -65,111 +66,104 @@
           <h5 class="modal-title">Edit Inquiry</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+
         <div class="modal-body">
           <input type="hidden" name="inquiry_id" id="edit_inquiry_id">
 
-          <!-- Customer Comment -->
-          <div class="mb-3">
-            <label for="edit_customer_comment" class="form-label">Customer Comment</label>
-            <textarea name="customer_comment" id="edit_customer_comment" class="form-control"></textarea>
-          </div>
+          <!-- Comment -->
+          <label>Customer Comment</label>
+          <textarea name="customer_comment" id="edit_customer_comment" class="form-control mb-3"></textarea>
 
-          <!-- File Upload -->
-          <div class="mb-3">
-            <label for="edit_customer_file" class="form-label">File Upload</label>
-            <input type="file" name="customer_file" id="edit_customer_file" class="form-control">
-            <small id="currentFile" class="form-text text-muted"></small>
-          </div>
+          <!-- File -->
+          <label>File</label>
+          <input type="file" name="customer_file" class="form-control mb-1">
+          <small id="currentFile" class="text-muted"></small>
 
-          <!-- Tops -->
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="edit_jersey_sando" class="form-label">Jersey Sando</label>
-              <input type="text" name="jersey_sando" id="edit_jersey_sando" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_jersey_neck" class="form-label">Jersey Neck</label>
-              <input type="text" name="jersey_neck" id="edit_jersey_neck" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_jersey_sando_size" class="form-label">Jersey Sando Size</label>
-              <input type="text" name="jersey_sando_size" id="edit_jersey_sando_size" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_longsleeves" class="form-label">Longsleeves</label>
-              <input type="text" name="longsleeves" id="edit_longsleeves" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_tshirt" class="form-label">T-Shirt</label>
-              <input type="text" name="tshirt" id="edit_tshirt" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_tshirt_size" class="form-label">T-Shirt Size</label>
-              <input type="text" name="tshirt_size" id="edit_tshirt_size" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_polo_size" class="form-label">Polo Size</label>
-              <input type="text" name="polo_size" id="edit_polo_size" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_others" class="form-label">Other Tops</label>
-              <input type="text" name="others" id="edit_others" class="form-control">
-            </div>
-          </div>
+          <hr>
 
-          <!-- Bottoms -->
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="edit_jersey_short" class="form-label">Jersey Short</label>
-              <input type="text" name="jersey_short" id="edit_jersey_short" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_short_size" class="form-label">Short Size</label>
-              <input type="text" name="short_size" id="edit_short_size" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_jogging_pants" class="form-label">Jogging Pants</label>
-              <input type="text" name="jogging_pants" id="edit_jogging_pants" class="form-control">
-            </div>
-          </div>
+          <!-- TOPS -->
+          <h5>Tops</h5>
 
-          <!-- Accessories -->
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="edit_warmer" class="form-label">Warmer</label>
-              <input type="text" name="warmer" id="edit_warmer" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_sublimation_dtf" class="form-label">Sublimation DTF</label>
-              <input type="text" name="sublimation_dtf" id="edit_sublimation_dtf" class="form-control">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="edit_other_service" class="form-label">Other Service</label>
-              <input type="text" name="other_service" id="edit_other_service" class="form-control">
-            </div>
-          </div>
+          <label>Jersey Sando</label>
+          <select name="jersey_sando" id="edit_jersey_sando" class="form-select">
+            <option value="">-- None --</option>
+            <option value="jerseySandoOrdinary">Ordinary CUT</option>
+            <option value="jerseySandoNBA">NBA CUT</option>
+            <option value="jerseySandoNoRib">REVERSIBLE W/O RIBBINGS</option>
+            <option value="jerseySandoRib">REVERSIBLE W RIBBINGS</option>
+          </select>
 
-          <!-- Material and Colors -->
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="edit_material_type" class="form-label">Material Type</label>
-              <input type="text" name="material_type" id="edit_material_type" class="form-control">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="edit_colors" class="form-label">Colors (comma-separated)</label>
-              <input type="text" name="colors" id="edit_colors" class="form-control">
-            </div>
-          </div>
+          <label class="mt-2">Neck</label>
+          <select name="jersey_neck" id="edit_jersey_neck" class="form-select">
+            <option value="">-- None --</option>
+            <option value="jerseyRound">ROUND NECK</option>
+            <option value="jerseyV">V-NECK</option>
+            <option value="jerseyW">W-NECK</option>
+          </select>
 
+          <label class="mt-2">Sando Size</label><br>
+          <label><input type="radio" name="jersey_sando_size" value="sandoMale"> Male</label>
+          <label><input type="radio" name="jersey_sando_size" value="sandoFemale"> Female</label>
+          <label><input type="radio" name="jersey_sando_size" value="sandoKids"> Kids</label>
+
+          <label class="mt-2">T-Shirt</label>
+          <select name="tshirt" id="edit_tshirt" class="form-select">
+            <option value="">-- None --</option>
+            <option value="tshirtRound">ROUND NECK</option>
+            <option value="tshirtV">V-NECK</option>
+            <option value="tshirtFull">FULL COLLAR</option>
+            <option value="tshirtHalf">HALF COLLAR</option>
+          </select>
+
+          <label class="mt-2">T-Shirt Size</label><br>
+          <label><input type="radio" name="tshirt_size" value="tshirtMale"> Male</label>
+          <label><input type="radio" name="tshirt_size" value="tshirtFemale"> Female</label>
+          <label><input type="radio" name="tshirt_size" value="tshirtKid"> Kids</label>
+
+          <hr>
+
+          <!-- BOTTOMS -->
+          <h5>Bottoms</h5>
+
+          <label>Jersey Short</label>
+          <select name="jersey_short" id="edit_jersey_short" class="form-select">
+            <option value="">-- None --</option>
+            <option value="shortNormal">NORMAL CUT</option>
+            <option value="shortKnee">ABOVE THE KNEE</option>
+            <option value="shortUnisex">UNISEX</option>
+            <option value="shortCycling">CYCLING</option>
+          </select>
+
+          <label class="mt-2">Short Size</label><br>
+          <label><input type="radio" name="short_size" value="shortAdult"> Adult</label>
+          <label><input type="radio" name="short_size" value="shortKids"> Kids</label>
+
+          <hr>
+
+          <!-- MATERIAL -->
+          <h5>Material</h5>
+          <label><input type="radio" name="material_type" value="polydex"> Polydex</label><br>
+          <label><input type="radio" name="material_type" value="cottonBlend"> Cotton Blend</label><br>
+          <label><input type="radio" name="material_type" value="triBlend"> Tri-Blend</label><br>
+          <label><input type="radio" name="material_type" value="performance"> Performance</label>
+
+          <h5 class="mt-3">Colors</h5>
+          <label><input type="checkbox" name="colors[]" value="red"> Red</label>
+          <label><input type="checkbox" name="colors[]" value="blue"> Blue</label>
+          <label><input type="checkbox" name="colors[]" value="green"> Green</label>
+          <label><input type="checkbox" name="colors[]" value="black"> Black</label>
+          <label><input type="checkbox" name="colors[]" value="white"> White</label>
         </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary">Save</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
 
 
     <!-- Footer -->
@@ -283,7 +277,7 @@ $(document).ready(function(){
         var formData = new FormData(this);
         formData.append('action','update');
         $.ajax({
-            url:'inquiry_crud.php',
+            url:'my_inquiries_crud.php',
             type:'POST',
             data: formData,
             processData:false,

@@ -1,0 +1,125 @@
+#editModal .modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+}
+
+/* Header */
+#editModal .modal-header {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+}
+
+#editModal .modal-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+#editModal .btn-close {
+    filter: invert(1);
+}
+
+/* Body */
+#editModal .modal-body {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+}
+
+/* Section titles */
+#editModal h5 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #084298;
+}
+
+/* Labels */
+#editModal label {
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+/* Inputs */
+#editModal textarea,
+#editModal select,
+#editModal input[type="file"] {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+}
+
+#editModal textarea {
+    resize: vertical;
+}
+
+/* Radio & Checkbox groups */
+#editModal input[type="radio"],
+#editModal input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+#editModal .radio-group,
+#editModal .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+/* Color checkboxes */
+#editModal .checkbox-group label {
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#editModal .checkbox-group label:hover {
+    background-color: #e9f2ff;
+    border-color: #0d6efd;
+}
+
+/* Footer */
+#editModal .modal-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+}
+
+#editModal .modal-footer .btn {
+    border-radius: 20px;
+    padding: 0.4rem 1.25rem;
+}
+
+/* Save button emphasis */
+#editModal .btn-primary {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    border: none;
+}
+
+/* Mobile tweaks */
+@media (max-width: 576px) {
+    #editModal .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    #editModal .modal-body {
+        padding: 1rem;
+    }
+}
+
+#editModal .col-lg-4,
+#editModal .col-md-6 {
+    margin-bottom: 1rem;
+}
+
+#editModal h5 {
+    margin-top: 0;
+}
+
