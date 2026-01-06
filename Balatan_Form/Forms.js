@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const el = document.getElementById(id);
       if (el) el.classList.remove("input-error");
     });
-   
+
     dropdownIds.forEach(id => {
       const el = document.getElementById(id);
       if (el && el.value !== "") {
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         alert(data.message);
         form.reset();
         document.getElementById("recordId").value = "";
-        setupDropdownCheckmarks(); 
+        setupDropdownCheckmarks();
         loadRecords();
       });
   });
@@ -125,47 +125,61 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   window.editRecord = function (id) {
-  fetch("crud.php", {
-    method: "POST",
-    body: new URLSearchParams({ func_name: "GetRecord", id })
-  })
-    .then(res => res.json())
-    .then(row => {
-      document.getElementById("recordId").value = row.id;
+    fetch("crud.php", {
+      method: "POST",
+      body: new URLSearchParams({ func_name: "GetRecord", id })
+    })
+      .then(res => res.json())
+      .then(row => {
+        document.getElementById("recordId").value = row.id;
+        document.getElementById("customer").value = row.customer || "";
 
-      document.getElementById("customer").value = row.customer || "";
-
-      dropdownIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.value = row[id] || "";
-          el.classList.toggle("selected-option", el.value !== "");
-        }
-      });
-
-      document.querySelectorAll("input[type='radio']").forEach(radio => {
-        radio.checked = radio.value === row[radio.name];
-      });
-
-      document
-        .querySelectorAll("input[name='colorSelection[]']")
-        .forEach(cb => {
-          cb.checked = row.colorSelection
-            ? row.colorSelection.split(",").includes(cb.value)
-            : false;
+        dropdownIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.value = row[id] || "";
+            el.classList.toggle("selected-option", el.value !== "");
+          }
         });
 
-      document
-        .querySelectorAll("input[name='materialType']")
-        .forEach(radio => {
-          radio.checked = radio.value === row.materialType;
+        document.querySelectorAll("input[type='radio']").forEach(radio => {
+          radio.checked = radio.value === row[radio.name];
         });
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-};
+        document
+          .querySelectorAll("input[name='colorSelection[]']")
+          .forEach(cb => {
+            cb.checked = row.colorSelection
+              ? row.colorSelection.split(",").includes(cb.value)
+              : false;
+          });
 
+        document
+          .querySelectorAll("input[name='materialType']")
+          .forEach(radio => {
+            radio.checked = radio.value === row.materialType;
+          });
 
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+  };
+
+  // Initialize dropdown checkmarks and records
   setupDropdownCheckmarks();
   loadRecords();
+
+  // ================= TAB LOGIC =================
+  const tabLinks = document.querySelectorAll(".tab-link");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      tabLinks.forEach(l => l.classList.remove("active"));
+      tabContents.forEach(c => c.classList.remove("active"));
+
+      link.classList.add("active");
+      const tabId = link.getAttribute("data-tab");
+      document.getElementById(tabId).classList.add("active");
+    });
+  });
 });
