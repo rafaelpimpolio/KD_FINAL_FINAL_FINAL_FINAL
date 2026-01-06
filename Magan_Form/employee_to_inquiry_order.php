@@ -6,7 +6,7 @@
 <title>KD Sportswear & Apparel - Inquiries</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="inquiry_style.css">
-<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../account/nav.css">
 
 </head>
 <body>
@@ -143,8 +143,8 @@
             <div class="footer-bottom">
                 <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; margin: 0;">© 2025 KD Sportswear & Apparel. All rights reserved.</p>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/kdsportswearandapparel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="../images/facebook.png" alt=""></a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="../images/instagram.png" alt=""></a>
+                    <a href="https://www.facebook.com/kdsportswearandapparel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="" alt=""></a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="" alt=""></a>
                 </div>
             </div>
         </div>

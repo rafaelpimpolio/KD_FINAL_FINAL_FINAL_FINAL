@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KD Sportswear & Apparel - Orders</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../account/nav.css">
 <link rel="stylesheet" href="../Magan_Form/inquiry_style.css">
 </head>
 <body>
@@ -18,6 +18,7 @@
             <li><a href="../Magan_Form/employee_to_inquiry_order.php" class="nav-link">Inquiry List</a></li>
             <li><a href="orders.php" class="nav-link">Order List</a></li>
             <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
+            <li><a href="../account/account.php" class="nav-link">Account</a></li>
         </ul>
         <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
             <span id="menuIcon">☰</span>
@@ -133,8 +134,8 @@
             <div class="footer-bottom">
                 <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; margin: 0;">© 2025 KD Sportswear & Apparel. All rights reserved.</p>
                 <div class="footer-social">
-                    <a href="https://www.facebook.com/kdsportswearandapparel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="../images/facebook.png" alt=""></a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="../images/instagram.png" alt=""></a>
+                    <a href="https://www.facebook.com/kdsportswearandapparel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="" alt=""></a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="" alt=""></a>
                 </div>
             </div>
         </div>
