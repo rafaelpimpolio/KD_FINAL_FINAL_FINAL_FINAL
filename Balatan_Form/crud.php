@@ -13,40 +13,43 @@ if (function_exists($func_name)) {
     echo json_encode(["status" => "error", "message" => "Invalid function"]);
 }
 
-
+/**
+ * =========================
+ * DISPLAY RECORDS
+ * Admin sees all, customer sees only theirs
+ * =========================
+ */
 function DisplayRecord()
 {
     global $pdo;
 
-    $customer_id = $_SESSION['customer_id'];
-
-    $sql = "SELECT * FROM inquiry
-            WHERE customer_id = :customer_id
-            ORDER BY id DESC";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':customer_id' => $customer_id]);
+    if ($_SESSION['role'] === 'customer') {
+        // Customer sees only their own inquiries
+        $sql = "SELECT * FROM inquiry
+                WHERE customer_id = :customer_id
+                ORDER BY id DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':customer_id' => $_SESSION['customer_id']]);
+    } else {
+        // Admin sees all inquiries
+        $sql = "SELECT * FROM inquiry ORDER BY id DESC";
+        $stmt = $pdo->query($sql);
+    }
 
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 }
 
-
-
+/**
+ * =========================
+ * ADD RECORD
+ * Customer_id is set from session
+ * =========================
+ */
 function AddRecord()
 {
     global $pdo;
 
-    $dropdownFields = [
-        'jerseySando',
-        'jerseyNeck',
-        'tshirt',
-        'poloSize',
-        'others',
-        'jerseyShort',
-        'sublimationDTF',
-        'otherService'
-    ];
-
+    // Validate at least one selection exists
     $hasSelection =
         !empty($_POST['jerseySando']) ||
         !empty($_POST['jerseyNeck']) ||
@@ -62,7 +65,6 @@ function AddRecord()
         !empty($_POST['tshirtSize']) ||
         !empty($_POST['shortSize']);
 
-
     if (!$hasSelection) {
         echo json_encode([
             "status" => "error",
@@ -71,12 +73,11 @@ function AddRecord()
         return;
     }
 
+    // Handle file upload
     $customerFile = '';
     if (!empty($_FILES['customerFile']['name']) && $_FILES['customerFile']['error'] === 0) {
         $targetDir = "uploads/";
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
+        if (!file_exists($targetDir)) mkdir($targetDir, 0777, true);
         $customerFile = $targetDir . time() . '_' . basename($_FILES['customerFile']['name']);
         move_uploaded_file($_FILES['customerFile']['tmp_name'], $customerFile);
     }
@@ -85,102 +86,93 @@ function AddRecord()
         ? implode(',', $_POST['colorSelection'])
         : '';
 
-    $materialType = $_POST['materialType'] ?? '';
+    $sql = "INSERT INTO inquiry (
+        customer_id, customer_comment, customer_file,
+        jersey_sando, jersey_neck, jersey_sando_size, longsleeves,
+        tshirt, tshirt_size, polo_size, others,
+        jersey_short, short_size, jogging_pants, warmer,
+        sublimation_dtf, other_service, material_type, colors
+    ) VALUES (
+        :customer_id, :customer_comment, :customer_file,
+        :jersey_sando, :jersey_neck, :jersey_sando_size, :longsleeves,
+        :tshirt, :tshirt_size, :polo_size, :others,
+        :jersey_short, :short_size, :jogging_pants, :warmer,
+        :sublimation_dtf, :other_service, :material_type, :colors
+    )";
 
-$customer_id = $_SESSION['customer_id'];
-
-$sql = "INSERT INTO inquiry (
-    customer_id,
-    customer_comment,
-    customer_file,
-    jersey_sando,
-    jersey_neck,
-    jersey_sando_size,
-    longsleeves,
-    tshirt,
-    tshirt_size,
-    polo_size,
-    others,
-    jersey_short,
-    short_size,
-    jogging_pants,
-    warmer,
-    sublimation_dtf,
-    other_service,
-    material_type,
-    colors
-) VALUES (
-    :customer_id,
-    :customer_comment,
-    :customer_file,
-    :jersey_sando,
-    :jersey_neck,
-    :jersey_sando_size,
-    :longsleeves,
-    :tshirt,
-    :tshirt_size,
-    :polo_size,
-    :others,
-    :jersey_short,
-    :short_size,
-    :jogging_pants,
-    :warmer,
-    :sublimation_dtf,
-    :other_service,
-    :material_type,
-    :colors
-)";
-
-
-Database::ManageRecord($pdo, $sql, [
-    ':customer_id'        => $customer_id,
-    ':customer_comment'   => $_POST['customer_comment'] ?? '',
-    ':customer_file'      => $customerFile,
-
-    ':jersey_sando'       => $_POST['jerseySando'] ?? '',
-    ':jersey_neck'        => $_POST['jerseyNeck'] ?? '',
-    ':jersey_sando_size'  => $_POST['jerseySandoSize'] ?? '',
-    ':longsleeves'        => $_POST['longsleeves'] ?? '',
-    ':tshirt'             => $_POST['tshirt'] ?? '',
-    ':tshirt_size'        => $_POST['tshirtSize'] ?? '',
-    ':polo_size'          => $_POST['poloSize'] ?? '',
-    ':others'             => $_POST['others'] ?? '',
-
-    ':jersey_short'       => $_POST['jerseyShort'] ?? '',
-    ':short_size'         => $_POST['shortSize'] ?? '',
-    ':jogging_pants'      => $_POST['joggingPants'] ?? '',
-
-    ':warmer'             => $_POST['warmer'] ?? '',
-    ':sublimation_dtf'    => $_POST['sublimationDTF'] ?? '',
-    ':other_service'      => $_POST['otherService'] ?? '',
-
-    ':material_type'      => $_POST['materialType'] ?? '',
-    ':colors'             => isset($_POST['colorSelection'])
-        ? implode(',', $_POST['colorSelection'])
-        : ''
-]);
-
-
+    Database::ManageRecord($pdo, $sql, [
+        ':customer_id'      => $_SESSION['customer_id'],
+        ':customer_comment' => $_POST['customer_comment'] ?? '',
+        ':customer_file'    => $customerFile,
+        ':jersey_sando'     => $_POST['jerseySando'] ?? '',
+        ':jersey_neck'      => $_POST['jerseyNeck'] ?? '',
+        ':jersey_sando_size'=> $_POST['jerseySandoSize'] ?? '',
+        ':longsleeves'      => $_POST['longsleeves'] ?? '',
+        ':tshirt'           => $_POST['tshirt'] ?? '',
+        ':tshirt_size'      => $_POST['tshirtSize'] ?? '',
+        ':polo_size'        => $_POST['poloSize'] ?? '',
+        ':others'           => $_POST['others'] ?? '',
+        ':jersey_short'     => $_POST['jerseyShort'] ?? '',
+        ':short_size'       => $_POST['shortSize'] ?? '',
+        ':jogging_pants'    => $_POST['joggingPants'] ?? '',
+        ':warmer'           => $_POST['warmer'] ?? '',
+        ':sublimation_dtf'  => $_POST['sublimationDTF'] ?? '',
+        ':other_service'    => $_POST['otherService'] ?? '',
+        ':material_type'    => $_POST['materialType'] ?? '',
+        ':colors'           => $colorSelection
+    ]);
 
     echo json_encode(["status" => "success", "message" => "Record added successfully."]);
 }
 
-
+/**
+ * =========================
+ * UPDATE RECORD
+ * Customers can only update their own records
+ * Admin can update any
+ * =========================
+ */
 function UpdateRecord()
 {
     global $pdo;
 
-    $customer_id = $_SESSION['customer_id'];
-
     $customerFile = '';
     if (!empty($_FILES['customerFile']['name']) && $_FILES['customerFile']['error'] === 0) {
         $targetDir = "uploads/";
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
+        if (!file_exists($targetDir)) mkdir($targetDir, 0777, true);
         $customerFile = $targetDir . time() . '_' . basename($_FILES['customerFile']['name']);
         move_uploaded_file($_FILES['customerFile']['tmp_name'], $customerFile);
     }
+
+    // Role-based condition
+    $where = "id = :id";
+    $params = [':id' => $_POST['id']];
+
+    if ($_SESSION['role'] === 'customer') {
+        $where .= " AND customer_id = :customer_id";
+        $params[':customer_id'] = $_SESSION['customer_id'];
+    }
+
+    $params = array_merge($params, [
+        ':customer_comment' => $_POST['customer_comment'] ?? '',
+        ':customer_file'    => $customerFile,
+        ':jersey_sando'     => $_POST['jerseySando'] ?? '',
+        ':jersey_neck'      => $_POST['jerseyNeck'] ?? '',
+        ':jersey_sando_size'=> $_POST['jerseySandoSize'] ?? '',
+        ':longsleeves'      => $_POST['longsleeves'] ?? '',
+        ':tshirt'           => $_POST['tshirt'] ?? '',
+        ':tshirt_size'      => $_POST['tshirtSize'] ?? '',
+        ':polo_size'        => $_POST['poloSize'] ?? '',
+        ':others'           => $_POST['others'] ?? '',
+        ':jersey_short'     => $_POST['jerseyShort'] ?? '',
+        ':short_size'       => $_POST['shortSize'] ?? '',
+        ':jogging_pants'    => $_POST['joggingPants'] ?? '',
+        ':warmer'           => $_POST['warmer'] ?? '',
+        ':sublimation_dtf'  => $_POST['sublimationDTF'] ?? '',
+        ':other_service'    => $_POST['otherService'] ?? '',
+        ':material_type'    => $_POST['materialType'] ?? '',
+        ':colors'           => isset($_POST['colorSelection']) ? implode(',', $_POST['colorSelection']) : ''
+    ]);
 
     $sql = "UPDATE inquiry SET
         customer_comment = :customer_comment,
@@ -201,64 +193,56 @@ function UpdateRecord()
         other_service = :other_service,
         material_type = :material_type,
         colors = :colors
-    WHERE id = :id AND customer_id = :customer_id";
+    WHERE $where";
 
-    Database::ManageRecord($pdo, $sql, [
-        ':id' => $_POST['id'],
-        ':customer_id' => $customer_id,
-        ':customer_comment' => $_POST['customer_comment'] ?? '',
-        ':customer_file' => $customerFile,
-
-        ':jersey_sando' => $_POST['jerseySando'] ?? '',
-        ':jersey_neck' => $_POST['jerseyNeck'] ?? '',
-        ':jersey_sando_size' => $_POST['jerseySandoSize'] ?? '',
-        ':longsleeves' => $_POST['longsleeves'] ?? '',
-        ':tshirt' => $_POST['tshirt'] ?? '',
-        ':tshirt_size' => $_POST['tshirtSize'] ?? '',
-        ':polo_size' => $_POST['poloSize'] ?? '',
-        ':others' => $_POST['others'] ?? '',
-        ':jersey_short' => $_POST['jerseyShort'] ?? '',
-        ':short_size' => $_POST['shortSize'] ?? '',
-        ':jogging_pants' => $_POST['joggingPants'] ?? '',
-        ':warmer' => $_POST['warmer'] ?? '',
-        ':sublimation_dtf' => $_POST['sublimationDTF'] ?? '',
-        ':other_service' => $_POST['otherService'] ?? '',
-        ':material_type' => $_POST['materialType'] ?? '',
-        ':colors' => isset($_POST['colorSelection'])
-            ? implode(',', $_POST['colorSelection'])
-            : ''
-    ]);
+    Database::ManageRecord($pdo, $sql, $params);
 
     echo json_encode(["status" => "success", "message" => "Record updated"]);
 }
 
-
-
+/**
+ * =========================
+ * DELETE RECORD
+ * Customers can delete only their own
+ * =========================
+ */
 function DeleteRecord()
 {
     global $pdo;
 
-    $customer_id = $_SESSION['customer_id'];
+    $where = "id = :id";
+    $params = [':id' => $_POST['id']];
 
-    Database::ManageRecord(
-        $pdo,
-        "DELETE FROM inquiry WHERE id = :id AND customer_id = :customer_id",
-        [
-            ':id' => $_POST['id'],
-            ':customer_id' => $customer_id
-        ]
-    );
+    if ($_SESSION['role'] === 'customer') {
+        $where .= " AND customer_id = :customer_id";
+        $params[':customer_id'] = $_SESSION['customer_id'];
+    }
+
+    $sql = "DELETE FROM inquiry WHERE $where";
+    Database::ManageRecord($pdo, $sql, $params);
 
     echo json_encode(["status" => "success", "message" => "Record deleted"]);
 }
 
-
-
+/**
+ * =========================
+ * GET SINGLE RECORD
+ * Customers can only access their own
+ * =========================
+ */
 function GetRecord()
 {
     global $pdo;
 
-    $stmt = $pdo->prepare("SELECT * FROM inquiry WHERE id = :id");
-    $stmt->execute([':id' => $_POST['id']]);
+    $sql = "SELECT * FROM inquiry WHERE id = :id";
+    $params = [':id' => $_POST['id']];
+
+    if ($_SESSION['role'] === 'customer') {
+        $sql .= " AND customer_id = :customer_id";
+        $params[':customer_id'] = $_SESSION['customer_id'];
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
 }
