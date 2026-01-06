@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         LIMIT 1
     ");
 
-    /* ✅ THIS WAS MISSING */
     $stmt->execute([
         ":username" => $username,
         ":role" => $role
