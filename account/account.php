@@ -23,9 +23,26 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Account Management</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="nav.css">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#home" class="navbar-brand">KD Sportswear & Apparel</a>
+            <ul class="navbar-menu" id="navbarMenu">
+                     <li><a href="../Magan_Form/employee_to_inquiry_order.php" class="nav-link">Inquiry List</a></li>
+                     <li><a href="../Valle_Form/orders.php" class="nav-link">Order List</a></li>
+                     <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
+                     <li><a href="../account/account.php" class="nav-link">Account</a></li>
+            </ul>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+                <span id="menuIcon">☰</span>
+            </button>
+        </div>
+    </nav>
+
 <div class="container mt-5">
     <h2>Admin Account Management</h2>
 
@@ -98,22 +115,66 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
 <!-- Customer Modal -->
 <div class="modal fade" id="createCustomerModal">
   <div class="modal-dialog">
-    <form id="customerForm" class="modal-content" novalidate>
-      <div class="modal-header"><h5 class="modal-title">Create Customer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <form id="customerForm" class="modal-content needs-validation" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title">Customer Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
       <div class="modal-body">
         <input type="hidden" name="action" value="create">
-        <div class="mb-3"><input type="text" name="first_name" class="form-control" placeholder="First Name" required></div>
-        <div class="mb-3"><input type="text" name="last_name" class="form-control" placeholder="Last Name" required></div>
-        <div class="mb-3"><input type="text" name="phone_number" class="form-control" placeholder="Phone" pattern="\d{10,15}"></div>
-        <div class="mb-3"><input type="email" name="email" class="form-control" placeholder="Email"></div>
-        <div class="mb-3"><input type="text" name="barangay" class="form-control" placeholder="Barangay"></div>
-        <div class="mb-3"><input type="text" name="city_municipality" class="form-control" placeholder="City/Municipality"></div>
-        <div class="mb-3"><input type="text" name="province" class="form-control" placeholder="Province"></div>
-        <div class="mb-3"><input type="text" name="postal_code" class="form-control" placeholder="Postal Code"></div>
-        <div class="mb-3"><input type="text" name="username" class="form-control" placeholder="Username" required></div>
-        <div class="mb-3"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
+
+        <div class="mb-3">
+          <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+          <div class="invalid-feedback">First name is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+          <div class="invalid-feedback">Last name is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="phone_number" class="form-control" placeholder="Phone" pattern="\d{10,15}">
+          <div class="invalid-feedback">Enter a valid phone number (10-15 digits).</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="email" name="email" class="form-control" placeholder="Email">
+          <div class="invalid-feedback">Enter a valid email address.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="barangay" class="form-control" placeholder="Barangay" required>
+          <div class="invalid-feedback">Barangay is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="city_municipality" class="form-control" placeholder="City/Municipality" required>
+          <div class="invalid-feedback">City/Municipality is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="province" class="form-control" placeholder="Province" required>
+          <div class="invalid-feedback">Province is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="postal_code" class="form-control" placeholder="Postal Code" required>
+          <div class="invalid-feedback">Postal code is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+          <div class="invalid-feedback">Username is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="password" name="password" class="form-control" placeholder="Password">
+          <div class="invalid-feedback">Password is required for new accounts.</div>
+        </div>
       </div>
+
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Save</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -121,22 +182,47 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
     </form>
   </div>
 </div>
+
 
 <!-- Employee Modal -->
 <div class="modal fade" id="createEmployeeModal">
   <div class="modal-dialog">
-    <form id="employeeForm" class="modal-content" novalidate>
-      <div class="modal-header"><h5 class="modal-title">Create Employee</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <form id="employeeForm" class="modal-content needs-validation" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title">Employee Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
       <div class="modal-body">
         <input type="hidden" name="action" value="create">
-        <div class="mb-3"><input type="text" name="first_name" class="form-control" placeholder="First Name" required></div>
-        <div class="mb-3"><input type="text" name="middle_initial" class="form-control" placeholder="Middle Initial"></div>
-        <div class="mb-3"><input type="text" name="last_name" class="form-control" placeholder="Last Name" required></div>
-        <div class="mb-3"><input type="text" name="username" class="form-control" placeholder="Username" required></div>
-        <div class="mb-3"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
+
+        <div class="mb-3">
+          <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+          <div class="invalid-feedback">First name is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="middle_initial" class="form-control" placeholder="Middle Initial" maxlength="1">
+          <div class="invalid-feedback">Middle initial should be a single letter.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+          <div class="invalid-feedback">Last name is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+          <div class="invalid-feedback">Username is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <input type="password" name="password" class="form-control" placeholder="Password">
+          <div class="invalid-feedback">Password is required for new accounts.</div>
+        </div>
 
       </div>
+
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Save</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -145,88 +231,59 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </div>
 
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>KD Sportswear & Apparel</h3>
+                    <p>Custom apparel design shop creating unique t-shirts and jerseys since 2023.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#latest-designs">Latest Designs</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li>Custom T-Shirts</li>
+                        <li>Team Jerseys</li>
+                        <li>Community Shirts</li>
+                        <li>Special Orders</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li>J. Hernandez Avenue,</li>
+                        <li>Sta. Cruz, Naga City</li>
+                        <li style="margin-top: 0.5rem;">0998 976 5742</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                        kdsportswear2023@gmail.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; margin: 0;">© 2025 KD Sportswear & Apparel. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/kdsportswearandapparel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="" alt=""></a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-$('#customerForm, #employeeForm').on('submit', function(e){
-    if(!this.checkValidity()){
-        e.preventDefault();
-        e.stopPropagation();
-        this.classList.add('was-validated');
-        return false;
-    }
-
-    e.preventDefault();
-    let form = $(this);
-    let url = form.attr('id') === 'customerForm' ? 'customer_crud.php' : 'employee_crud.php';
-
-    $.post(url, form.serialize(), function(res){
-        if(form.attr('id') === 'customerForm'){
-            $('#customerTable').html(res);
-            $('#createCustomerModal').modal('hide');
-        } else {
-            $('#employeeTable').html(res);
-            $('#createEmployeeModal').modal('hide');
-        }
-        form[0].reset();
-        form.removeClass('was-validated');
-    });
-});
-
-// Edit Customer
-$(document).on('click', '.editCustomerBtn', function(){
-    let id = $(this).data('id');
-
-    $.post('customer_crud.php', {action:'fetch', id:id}, function(res){
-        let data = JSON.parse(res);
-
-        let modal = $('#createCustomerModal');
-        modal.find('input[name="action"]').val('update');
-        modal.find('input[name="id"]').remove();
-        modal.append('<input type="hidden" name="id" value="'+id+'">');
-
-        modal.find('input[name="username"]').val(data.username);
-        modal.find('input[name="password"]').val(''); // optional
-        modal.find('input[name="first_name"]').val(data.first_name);
-        modal.find('input[name="last_name"]').val(data.last_name);
-        modal.find('input[name="phone_number"]').val(data.phone_number);
-        modal.find('input[name="email"]').val(data.email);
-        modal.find('input[name="barangay"]').val(data.barangay);
-        modal.find('input[name="city_municipality"]').val(data.city_municipality);
-        modal.find('input[name="province"]').val(data.province);
-        modal.find('input[name="postal_code"]').val(data.postal_code);
-
-        modal.modal('show');
-    });
-});
-
-// Edit Employee
-$(document).on('click', '.editEmployeeBtn', function(){
-    let id = $(this).data('id');
-
-    $.post('employee_crud.php', {action:'fetch', id:id}, function(res){
-        let data = JSON.parse(res);
-
-        let modal = $('#createEmployeeModal');
-        modal.find('input[name="action"]').val('update');
-        modal.find('input[name="id"]').remove();
-        modal.append('<input type="hidden" name="id" value="'+id+'">');
-
-        modal.find('input[name="username"]').val(data.username);
-        modal.find('input[name="password"]').val(''); // optional
-        modal.find('input[name="first_name"]').val(data.first_name);
-        modal.find('input[name="middle_initial"]').val(data.middle_initial);
-        modal.find('input[name="last_name"]').val(data.last_name);
-
-        modal.modal('show');
-    });
-});
-
-function deleteCustomer(id){
-    if(confirm('Are you sure?')) $.post('customer_crud.php',{action:'delete',id:id},res=>$('#customerTable').html(res));
-}
-function deleteEmployee(id){
-    if(confirm('Are you sure?')) $.post('employee_crud.php',{action:'delete',id:id},res=>$('#employeeTable').html(res));
-}
-</script>
+<script src=js/script.js></script>
 </body>
 </html>
