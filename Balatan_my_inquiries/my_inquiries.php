@@ -17,11 +17,12 @@
       <a href="#home" class="navbar-brand">KD Sportswear & Apparel</a>
       <ul class="navbar-menu" id="navbarMenu">
         <li><a href="../home.html#home" class="nav-link">Home</a></li>
+            <li><a href="../home.html#home" class="nav-link">Home</a></li>
         <li><a href="../home.html#latest-designs" class="nav-link">Latest Designs</a></li>
         <li><a href="../home.html#gallery" class="nav-link">Gallery</a></li>
         <li><a href="../home.html#services" class="nav-link">Services</a></li>
-        <li><a href="../home.html#testimonials" class="nav-link">Testimonials</a></li>
         <li><a href="../Balatan_Form/inquiry.html" class="nav-link">Make Inquiry</a></li>
+        <li><a href="../Balatan_my_inquiries/my_inquiries.php" class="nav-link">My Inquiries</a></li>
         <li><a href="../myOrders/myOrders.php" class="nav-link">My Orders</a></li>
         <li><a href="../login_signup.html" class="nav-link">Log out</a></li>
       </ul>
