@@ -66,11 +66,6 @@
             <input type="hidden" name="order_id" id="edit_order_id">
 
             <div class="mb-3">
-                <label for="edit_total_amount" class="form-label">Total Amount</label>
-                <input type="number" step="0.01" name="total_amount" id="edit_total_amount" class="form-control">
-            </div>
-
-            <div class="mb-3">
                 <label for="edit_order_status" class="form-label">Status</label>
                 <select name="status" id="edit_order_status" class="form-control">
                     <option value="PENDING">PENDING</option>
@@ -146,7 +141,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 function loadOrders(){
-    $.get('order_crud.php',{action:'read'},function(res){
+    $.get('../orders/orders_crud.php',{action:'read'},function(res){
         $('#ordersTableBody').html(res);
     });
 }
@@ -160,7 +155,7 @@ function openEditOrderModal(row){
 
 function deleteOrder(id){
     if(!confirm('Are you sure you want to delete this order?')) return;
-    $.post('order_crud.php',{action:'delete',order_id:id},function(res){
+    $.post('../orders/orders_crud.php',{action:'delete',order_id:id},function(res){
         alert(res);
         loadOrders();
     });
@@ -171,7 +166,7 @@ $(document).ready(function(){
 
     $('#editOrderForm').submit(function(e){
         e.preventDefault();
-        $.post('order_crud.php',$(this).serialize(),function(res){
+        $.post('../orders/orders_crud.php',$(this).serialize(),function(res){
             alert(res);
             loadOrders();
             bootstrap.Modal.getInstance(document.getElementById('editOrderModal')).hide();
