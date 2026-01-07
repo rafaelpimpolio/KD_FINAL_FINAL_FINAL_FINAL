@@ -62,25 +62,27 @@
           <h5 class="modal-title">Edit Order</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
-            <input type="hidden" name="order_id" id="edit_order_id">
+            <div class="modal-body">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="order_id" id="edit_order_id">
 
-            <div class="mb-3">
-                <label for="edit_order_status" class="form-label">Status</label>
-                <select name="status" id="edit_order_status" class="form-control">
-                    <option value="PENDING">PENDING</option>
-                    <option value="PAYMENT">FOR PAYMENT</option>
-                    <option value="PROCESSING">PROCESSING</option>
-                    <option value="READY FOR PICKUP">READY FOR PICKUP</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                </select>
+                <div class="mb-3">
+                    <label class="form-label">Order Status</label>
+                    <select name="status" id="edit_order_status" class="form-control">
+                        <option value="PENDING">PENDING</option>
+                        <option value="FOR PAYMENT">FOR PAYMENT</option>
+                        <option value="PROCESSING">PROCESSING</option>
+                        <option value="READY FOR PICKUP">READY FOR PICKUP</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
-      </form>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
     </div>
   </div>
 </div>
@@ -141,21 +143,20 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 function loadOrders(){
-    $.get('../orders/orders_crud.php',{action:'read'},function(res){
+    $.get('../orders/orders_crud.php', { action: 'read' }, function(res){
         $('#ordersTableBody').html(res);
     });
 }
 
 function openEditOrderModal(row){
     $('#edit_order_id').val(row.order_id);
-    $('#edit_total_amount').val(row.total_amount);
     $('#edit_order_status').val(row.status);
     new bootstrap.Modal(document.getElementById('editOrderModal')).show();
 }
 
 function deleteOrder(id){
     if(!confirm('Are you sure you want to delete this order?')) return;
-    $.post('../orders/orders_crud.php',{action:'delete',order_id:id},function(res){
+    $.post('../orders/orders_crud.php', { action:'delete', order_id:id }, function(res){
         alert(res);
         loadOrders();
     });
@@ -166,10 +167,12 @@ $(document).ready(function(){
 
     $('#editOrderForm').submit(function(e){
         e.preventDefault();
-        $.post('../orders/orders_crud.php',$(this).serialize(),function(res){
+        $.post('../orders/orders_crud.php', $(this).serialize(), function(res){
             alert(res);
             loadOrders();
-            bootstrap.Modal.getInstance(document.getElementById('editOrderModal')).hide();
+            bootstrap.Modal.getInstance(
+                document.getElementById('editOrderModal')
+            ).hide();
         });
     });
 });

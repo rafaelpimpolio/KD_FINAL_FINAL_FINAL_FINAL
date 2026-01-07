@@ -92,21 +92,18 @@ if ($action === 'read') {
 ========================= */
 elseif ($action === 'update') {
 
-    $order_id     = intval($_POST['order_id']);
-    $total_amount = floatval($_POST['total_amount']);
-    $status       = $conn->real_escape_string($_POST['status']);
+    $order_id = intval($_POST['order_id']);
+    $status   = $conn->real_escape_string($_POST['status']);
 
-    $sql = "
-        UPDATE orders 
-        SET total_amount = $total_amount,
-            status = '$status'
-        WHERE order_id = $order_id
-    ";
+    $sql = "UPDATE orders SET status='$status' WHERE order_id=$order_id";
 
-    echo $conn->query($sql)
-        ? "Order updated successfully."
-        : "Error updating order.";
+    if ($conn->query($sql)) {
+        echo "Order updated successfully";
+    } else {
+        echo "Update failed: " . $conn->error;
+    }
 }
+
 
 /* =========================
    DELETE ORDER
