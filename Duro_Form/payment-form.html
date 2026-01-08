@@ -9,19 +9,17 @@
 <link rel="stylesheet" href="payment.css">
 <link rel="stylesheet" href="../account/nav.css">
 </head>
-
 <body>
-
 
 <!-- Navigation -->
 <nav class="navbar" id="navbar">
     <div class="container">
         <a href="#home" class="navbar-brand">KD Sportswear & Apparel</a>
         <ul class="navbar-menu" id="navbarMenu">
-                    <li><a href="../Magan_Form/employee_to_inquiry_order.php" class="nav-link">Inquiry List</a></li>
-                    <li><a href="../Valle_Form/orders.php" class="nav-link">Order List</a></li>
-                    <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
-                    <li><a href="../account/account.php" class="nav-link">Account</a></li>
+            <li><a href="../Magan_Form/employee_to_inquiry_order.php" class="nav-link">Inquiry List</a></li>
+            <li><a href="../Valle_Form/orders.php" class="nav-link">Order List</a></li>
+            <li><a href="payment.html" class="nav-link">Payment</a></li>
+            <li><a href="../account/account.php" class="nav-link">Account</a></li>
         </ul>
         <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
             <span id="menuIcon">☰</span>
@@ -43,23 +41,44 @@
 <div class="form-container">
 <h2>Payment Details</h2>
 
-<form method="POST" action="payment_crud.php?action=create" class="needs-validation" novalidate>
-
+<form id="paymentForm" method="POST" action="payment_crud.php?action=create" class="needs-validation" novalidate>
 <input type="hidden" name="payment_id">
 
-<div class="mb-3">
-<label class="form-label">Order ID</label>
-<input type="number" class="form-control" name="order_id" required>
+<!-- Customer Autocomplete -->
+<!-- Customer -->
+<div class="mb-3 position-relative">
+    <label class="form-label">Customer</label>
+    <input
+        type="text"
+        class="form-control"
+        id="customerSearch"
+        placeholder="Type customer name..."
+        autocomplete="off"
+        required
+    >
+    <input type="hidden" name="customer_id" id="customer_id">
+    <div id="customerResults"
+         class="list-group position-absolute w-100"
+         style="z-index:1000;"></div>
 </div>
 
+<!-- Orders Dropdown -->
 <div class="mb-3">
-<label class="form-label">Customer ID</label>
-<input type="number" class="form-control" name="customer_id" required>
+    <label class="form-label">Select Order</label>
+    <select
+        class="form-select"
+        id="orderSelect"
+        name="order_id"
+        required
+    >
+        <option value="">-- Select order --</option>
+    </select>
 </div>
+
 
 <div class="mb-3">
 <label class="form-label">Employee ID</label>
-<input type="number" class="form-control" name="employee_id">
+<input type="number" class="form-control" name="employee_id" required>
 </div>
 
 <div class="mb-3">
@@ -79,7 +98,7 @@
 
 <div class="mb-3">
 <label class="form-label">Downpayment</label>
-<input type="number" class="form-control" name="downpayment" value="0">
+<input type="number" class="form-control" name="downpayment" value="0" min="0">
 </div>
 
 <div class="mb-3">
@@ -94,7 +113,7 @@
 
 <div class="mb-3">
 <label class="form-label">Status</label>
-<select class="form-select" name="status">
+<select class="form-select" name="status" required>
 <option value="PENDING">Pending</option>
 <option value="COMPLETED">Completed</option>
 <option value="FAILED">Failed</option>
@@ -102,7 +121,6 @@
 </div>
 
 <button class="btn btn-primary w-100">CONFIRM PAYMENT</button>
-
 </form>
 </div>
 </div>
@@ -113,7 +131,7 @@
 <h2>Payment Records</h2>
 
 <div class="table-responsive">
-<table class="table table-striped">
+<table class="table table-striped" id="paymentTable">
 <thead class="table-dark">
 <tr>
 <th>ID</th>
@@ -129,7 +147,7 @@
 </tr>
 </thead>
 <tbody id="paymentTableBody">
-<!-- loaded via PHP -->
+<tr><td colspan="10" class="text-center">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -139,68 +157,64 @@
 </div>
 </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h3>KD Sportswear & Apparel</h3>
-                    <p>Custom apparel design shop creating unique t-shirts and jerseys since 2023.</p>
-                </div>
+<!-- Footer -->
+<footer>
+<!-- your existing footer HTML -->
+</footer>
 
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#latest-designs">Latest Designs</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Services</h4>
-                    <ul class="footer-links">
-                        <li>Custom T-Shirts</li>
-                        <li>Team Jerseys</li>
-                        <li>Community Shirts</li>
-                        <li>Special Orders</li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <ul class="footer-links">
-                        <li>J. Hernandez Avenue,</li>
-                        <li>Sta. Cruz, Naga City</li>
-                        <li style="margin-top: 0.5rem;">0998 976 5742</li>
-                        <li style="display: flex; align-items: center; gap: 0.5rem;">
-                        kdsportswear2023@gmail.com
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; margin: 0;">© 2025 KD Sportswear & Apparel. All rights reserved.</p>
-                <div class="footer-social">
-                    <a href="https://www.facebook.com/kdsportswearandapparel" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="" alt=""></a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="" alt=""></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-<!-- LOAD DATA -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("payment_crud.php?action=read")
+
+    const paymentForm = document.getElementById("paymentForm");
+    const tableBody = document.getElementById("paymentTableBody");
+
+    function loadPayments(){
+        fetch("payment_crud.php?action=read")
         .then(res => res.text())
-        .then(html => {
-            document.getElementById("paymentTableBody").innerHTML = html;
-        });
+        .then(html => tableBody.innerHTML = html);
+    }
+    loadPayments();
+
+    // Handle form submit via AJAX
+    paymentForm.addEventListener("submit", e => {
+        e.preventDefault();
+        const formData = new FormData(paymentForm);
+
+        fetch("payment_crud.php?action=create", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(msg => {
+            alert(msg.replace(/(<([^>]+)>)/gi, "")); // remove HTML tags
+            paymentForm.reset();
+            loadPayments(); // reload table
+        })
+        .catch(err => console.error(err));
+    });
+
+    // Delegate delete button clicks
+    tableBody.addEventListener("click", e => {
+        if(e.target.matches(".btn-danger")){
+            e.preventDefault();
+            if(!confirm("Delete this payment?")) return;
+
+            fetch(e.target.href)
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg.replace(/(<([^>]+)>)/gi, ""));
+                loadPayments();
+            })
+            .catch(err => console.error(err));
+        }
+    });
 });
 </script>
 
+
+
+<script src="payment.js"></script>
 </body>
 </html>
