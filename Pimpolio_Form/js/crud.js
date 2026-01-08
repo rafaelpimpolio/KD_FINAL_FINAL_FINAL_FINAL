@@ -24,7 +24,7 @@ $(document).ready(function () {
                     alert("✅ Account successfully created!");
 
                     setTimeout(() => {
-                        window.location.href = "../depota.html";
+                        window.location.href = "../login_signup.html";
                     }, 1200);
 
                 } else {
