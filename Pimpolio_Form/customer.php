@@ -98,6 +98,10 @@
                 <label class="form-label">Password</label>
                 <input type="password" class="form-control" name="password" required>
             </div>
+            <div class="col-md-6">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="confirm_password" id="confirm_password" required>
+              </div>
         </div>
 
         <button class="btn btn-primary w-100" type="submit">

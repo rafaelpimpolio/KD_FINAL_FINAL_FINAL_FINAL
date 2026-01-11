@@ -1,14 +1,23 @@
 $(document).ready(function () {
 
     $("#customerForm").on("submit", function (e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        if (!this.checkValidity()) {
-            this.classList.add("was-validated");
-            return;
-        }
+    if (!this.checkValidity()) {
+        this.classList.add("was-validated");
+        return;
+    }
 
-        let formData = new FormData(this);
+    // Password confirmation check
+    let password = $("#password").val();
+    let confirmPassword = $("#confirm_password").val();
+
+    if (password !== confirmPassword) {
+        alert("❌ Passwords do not match.");
+        return; // stop submission
+    }
+
+    let formData = new FormData(this);
         formData.append("func_name", "CreateCustomerAccount");
 
         $.ajax({

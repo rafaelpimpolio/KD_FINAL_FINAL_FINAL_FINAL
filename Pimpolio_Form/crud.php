@@ -1,37 +1,37 @@
 <?php
-require "connect.php";
-
-$pdo = Database::Connection();
-
-if ($_POST['func_name'] === "CreateCustomerAccount") {
-    echo json_encode(CreateCustomerAccount($pdo));
-    exit;
-}
-
 function CreateCustomerAccount($pdo)
 {
     try {
         $pdo->beginTransaction();
 
         $username = trim($_POST['username']);
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
 
-        // Check username
+        // Server-side password confirmation check
+        if ($password !== $confirm_password) {
+            return ["success" => false, "message" => "Passwords do not match"];
+        }
+
+        // Hash password
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // Check if username already exists
         $check = $pdo->prepare("SELECT user_id FROM users WHERE username = ?");
         $check->execute([$username]);
         if ($check->rowCount() > 0) {
             return ["success" => false, "message" => "Username already exists"];
         }
 
-        // Insert user
+        // Insert user into users table
         $stmtUser = $pdo->prepare(
             "INSERT INTO users (username, password_hash) VALUES (?, ?)"
         );
-        $stmtUser->execute([$username, $password]);
+        $stmtUser->execute([$username, $password_hash]);
 
         $user_id = $pdo->lastInsertId();
 
-        // Insert customer
+        // Insert customer details
         $stmtCustomer = $pdo->prepare("
             INSERT INTO customer
             (user_id, first_name, last_name, phone_number, email, barangay, city_municipality, province, postal_code)
@@ -58,3 +58,4 @@ function CreateCustomerAccount($pdo)
         return ["success" => false, "message" => $e->getMessage()];
     }
 }
+?>
