@@ -1,23 +1,49 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    // -----------------------------
     // Load payment records
+    // -----------------------------
+    const paymentForm = document.getElementById("paymentForm");
+    const tableBody = document.getElementById("paymentTableBody");
+
     function loadPayments(){
         fetch("payment_crud.php?action=read")
         .then(res => res.text())
-        .then(html => {
-            document.getElementById("paymentTableBody").innerHTML = html;
-        });
+        .then(html => tableBody.innerHTML = html);
     }
     loadPayments();
 
+    // -----------------------------
+    // Handle form submit via AJAX
+    // -----------------------------
+    paymentForm.addEventListener("submit", e => {
+        e.preventDefault();
+        const formData = new FormData(paymentForm);
+
+        // Determine if this is create or update
+        const action = formData.get("payment_id") ? "update" : "create";
+
+        fetch(`payment_crud.php?action=${action}`, {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(msg => {
+            alert(msg.replace(/(<([^>]+)>)/gi, "")); // remove HTML tags
+            paymentForm.reset();
+            loadPayments();
+        })
+        .catch(err => console.error(err));
+    });
+
+    // -----------------------------
+    // Customer autocomplete
+    // -----------------------------
     const customerSearch  = document.getElementById('customerSearch');
     const customerResults = document.getElementById('customerResults');
     const customerIdInput = document.getElementById('customer_id');
     const orderSelect     = document.getElementById('orderSelect');
 
-    // -----------------------------
-    // Customer autocomplete
-    // -----------------------------
     customerSearch.addEventListener('input', async () => {
         const query = customerSearch.value.trim();
 
@@ -86,5 +112,61 @@ document.addEventListener("DOMContentLoaded", () => {
             orderSelect.innerHTML = `<option value="">Error loading orders</option>`;
         }
     }
+
+    // -----------------------------
+    // Delegate table actions (Delete & Edit)
+    // -----------------------------
+    tableBody.addEventListener("click", e => {
+
+        // Delete button
+        if(e.target.matches(".btn-danger")){
+            e.preventDefault();
+            if(!confirm("Delete this payment?")) return;
+
+            fetch(e.target.href)
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg.replace(/(<([^>]+)>)/gi, ""));
+                loadPayments();
+            })
+            .catch(err => console.error(err));
+        }
+
+        // Edit button
+        if (e.target.classList.contains("btn-edit")) {
+            e.preventDefault();
+            const payment = JSON.parse(e.target.dataset.payment);
+
+            // Fill the form with payment data
+            paymentForm.payment_id.value = payment.payment_id;
+            document.getElementById("customerSearch").value = payment.customer_name;
+            document.getElementById("customer_id").value = payment.customer_id;
+
+            // Load orders for this customer and select the correct one
+            loadCustomerOrders(payment.customer_id).then(() => {
+                document.getElementById("orderSelect").value = payment.order_id;
+            });
+
+            paymentForm.employee_id.value = payment.employee_id;
+            paymentForm.method_of_payment.value = payment.method_of_payment;
+            paymentForm.total_amount.value = payment.total_amount;
+            paymentForm.downpayment.value = payment.downpayment;
+            paymentForm.balance.value = payment.balance;
+            paymentForm.date.value = payment.date;
+            paymentForm.status.value = payment.status;
+
+            paymentForm.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+
+    // -----------------------------
+    // Logout confirmation
+    // -----------------------------
+    window.confirmLogout = function(event) {
+        event.preventDefault();
+        if(confirm('Are you sure you want to logout?')) {
+            window.location.href = '../login_signup.html';
+        }
+    };
 
 });

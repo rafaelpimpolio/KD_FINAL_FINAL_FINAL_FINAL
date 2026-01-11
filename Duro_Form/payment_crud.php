@@ -103,26 +103,32 @@ function handleRead() {
         return;
     }
 
-    while ($row = $result->fetch_assoc()) {
-        echo '<tr>
-            <td>'.htmlspecialchars($row['payment_id']).'</td>
-            <td>'.htmlspecialchars($row['order_id']).'</td>
-            <td>'.htmlspecialchars($row['customer_name']).'</td>
-            <td>'.htmlspecialchars($row['method_of_payment']).'</td>
-            <td>'.htmlspecialchars($row['total_amount']).'</td>
-            <td>'.htmlspecialchars($row['downpayment']).'</td>
-            <td>'.htmlspecialchars($row['balance']).'</td>
-            <td>'.htmlspecialchars($row['date']).'</td>
-            <td>'.htmlspecialchars($row['status']).'</td>
-            <td>
-                <a href="payment_crud.php?action=delete&id='.$row['payment_id'].'"
-                   class="btn btn-sm btn-danger"
-                   onclick="return confirm(\'Delete this payment?\')">
-                   Delete
-                </a>
-            </td>
-        </tr>';
-    }
+   while ($row = $result->fetch_assoc()) {
+    echo '<tr>
+        <td>'.htmlspecialchars($row['payment_id']).'</td>
+        <td>'.htmlspecialchars($row['order_id']).'</td>
+        <td>'.htmlspecialchars($row['customer_name']).'</td>
+        <td>'.htmlspecialchars($row['method_of_payment']).'</td>
+        <td>'.htmlspecialchars($row['total_amount']).'</td>
+        <td>'.htmlspecialchars($row['downpayment']).'</td>
+        <td>'.htmlspecialchars($row['balance']).'</td>
+        <td>'.htmlspecialchars($row['date']).'</td>
+        <td>'.htmlspecialchars($row['status']).'</td>
+        <td>    
+            <a href="#"
+               class="btn btn-sm btn-warning btn-edit"
+               data-payment="'.htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8').'">
+               Edit
+            </a>
+            <a href="payment_crud.php?action=delete&id='.htmlspecialchars($row['payment_id']).'"
+               class="btn btn-sm btn-danger"
+               onclick="return confirm(\'Delete this payment?\')">
+               Delete
+            </a>
+        </td>
+    </tr>';
+}
+
 }
 
 /* =========================
