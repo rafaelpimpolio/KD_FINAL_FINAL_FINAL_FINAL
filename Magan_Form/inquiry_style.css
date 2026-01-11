@@ -19,11 +19,15 @@ h2 {
 /* TABLE CONTAINER */
 .table-container {
     background: white;
-    padding: 25px;
+    padding: 40px 50px;    
     border-radius: 12px;
     box-shadow: 0px 0px 15px rgba(255,255,255,0.2);
     border-top: 5px solid #007bff;
-    min-height: 150px;
+    
+    min-height: 350px;     
+    width: 95%;            
+    max-width: 1400px;     
+    margin: 1.5rem auto;   
 }
 
 /* TABLE STYLING */

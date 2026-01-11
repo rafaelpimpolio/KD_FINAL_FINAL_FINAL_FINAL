@@ -31,8 +31,8 @@
       </button>
     </div>
   </nav>
+  <h2 class="headings">Customer's Inquiries</h2>
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">Customer Inquiries</h2>
     <div class="table-responsive table-container">
         <table class="table table-striped table-bordered" id="inquiryTable">
             <thead class="table-dark">
