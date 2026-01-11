@@ -39,75 +39,72 @@
     <div class="form-container">
         <h2>Customer Details</h2>
 
-    <form id="customerForm" class="needs-validation" novalidate action="javascript:void(0)">
-
-        <!-- First & Last Name -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" name="first_name" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="last_name" required>
-            </div>
+    <form id="customerForm" class="needs-validation" novalidate>
+    <!-- First & Last Name -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" name="first_name" required>
         </div>
-
-        <!-- Phone & Email -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" name="phone_number" pattern="^[0-9]{11}$" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" required>
-            </div>
+        <div class="col-md-6">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="last_name" required>
         </div>
+    </div>
 
-        <!-- Address -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Barangay</label>
-                <input type="text" class="form-control" name="barangay" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">City / Municipality</label>
-                <input type="text" class="form-control" name="city_municipality" required>
-            </div>
+    <!-- Phone & Email -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" name="phone_number" pattern="^[0-9]{11}$" required>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Province</label>
-                <input type="text" class="form-control" name="province" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Postal Code</label>
-                <input type="text" class="form-control" name="postal_code" pattern="^[0-9]{4}$" required>
-            </div>
+        <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" required>
         </div>
+    </div>
 
-        <!-- Login -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Username</label>
-                <input type="text" class="form-control" name="username" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" name="confirm_password" id="confirm_password" required>
-              </div>
+    <!-- Address -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Barangay</label>
+            <input type="text" class="form-control" name="barangay" required>
         </div>
+        <div class="col-md-6">
+            <label class="form-label">City / Municipality</label>
+            <input type="text" class="form-control" name="city_municipality" required>
+        </div>
+    </div>
 
-        <button class="btn btn-primary w-100" type="submit">
-            Create Account
-        </button>
-    </form>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Province</label>
+            <input type="text" class="form-control" name="province" required>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Postal Code</label>
+            <input type="text" class="form-control" name="postal_code" pattern="^[0-9]{4}$" required>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" required>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <div class="col-md-6 mt-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" name="confirm_password" required>
+        </div>
+    </div>
+
+    <button class="btn btn-primary w-100" type="submit">Create Account</button>
+</form>
 
     </div>
 

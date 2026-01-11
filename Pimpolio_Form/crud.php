@@ -1,14 +1,24 @@
 <?php
+require "connect.php";
+
+$pdo = Database::Connection();
+
+if ($_POST['func_name'] === "CreateCustomerAccount") {
+    echo json_encode(CreateCustomerAccount($pdo));
+    exit;
+}
+
 function CreateCustomerAccount($pdo)
 {
     try {
         $pdo->beginTransaction();
 
+        // Trim inputs
         $username = trim($_POST['username']);
-        $password = $_POST['password'];
-        $confirm_password = $_POST['confirm_password'];
+        $password = trim($_POST['password']);
+        $confirm_password = trim($_POST['confirm_password']);
 
-        // Server-side password confirmation check
+        // Server-side password confirmation
         if ($password !== $confirm_password) {
             return ["success" => false, "message" => "Passwords do not match"];
         }
@@ -16,19 +26,16 @@ function CreateCustomerAccount($pdo)
         // Hash password
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-        // Check if username already exists
+        // Check if username exists
         $check = $pdo->prepare("SELECT user_id FROM users WHERE username = ?");
         $check->execute([$username]);
         if ($check->rowCount() > 0) {
             return ["success" => false, "message" => "Username already exists"];
         }
 
-        // Insert user into users table
-        $stmtUser = $pdo->prepare(
-            "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        );
+        // Insert user
+        $stmtUser = $pdo->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
         $stmtUser->execute([$username, $password_hash]);
-
         $user_id = $pdo->lastInsertId();
 
         // Insert customer details
@@ -37,7 +44,6 @@ function CreateCustomerAccount($pdo)
             (user_id, first_name, last_name, phone_number, email, barangay, city_municipality, province, postal_code)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
-
         $stmtCustomer->execute([
             $user_id,
             $_POST['first_name'],
