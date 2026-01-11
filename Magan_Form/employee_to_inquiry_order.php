@@ -19,6 +19,8 @@
                      <li><a href="../Valle_Form/orders.php" class="nav-link">Order List</a></li>
                      <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
                      <li><a href="../account/account.php" class="nav-link">Account</a></li>
+                     <li><a href="#" class="nav-link logout-link" onclick="confirmLogout(event)">Logout</a></li>
+
             </ul>
             <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
                 <span id="menuIcon">☰</span>
@@ -180,6 +182,14 @@ function deleteInquiry(id) {
         loadInquiries();
         alert(res);
     });
+}
+
+// Logout confirmation
+function confirmLogout(event) {
+    event.preventDefault();
+    if(confirm('Are you sure you want to logout?')) {
+        window.location.href = '../login_signup.html';
+    }
 }
 
 $(document).ready(function(){
