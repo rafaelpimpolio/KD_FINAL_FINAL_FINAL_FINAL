@@ -36,6 +36,8 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
                      <li><a href="../Valle_Form/orders.php" class="nav-link">Order List</a></li>
                      <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
                      <li><a href="../account/account.php" class="nav-link">Account</a></li>
+                     <li><a href="#" class="nav-link logout-link" onclick="confirmLogout(event)">Logout</a></li>
+
             </ul>
             <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
                 <span id="menuIcon">☰</span>
@@ -285,5 +287,15 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src=js/script.js></script>
+<script>
+    // Logout confirmation
+    function confirmLogout(event) {
+        event.preventDefault();
+        if(confirm('Are you sure you want to logout?')) {
+            window.location.href = '../login_signup.html';
+        }
+    }
+    </script>
+
 </body>
 </html>
