@@ -19,3 +19,5 @@
 [2026-01-08 00:19:15] Action: DELETE | Payment ID: 9 | Transaction ID:  | Reference:  | Payment deleted
 [2026-01-08 00:28:21] Action: CREATE | Payment ID: 10 | Transaction ID: 2 | Reference: N/A | Payment created for order 2
 [2026-01-08 00:44:27] Action: CREATE | Payment ID: 11 | Transaction ID: 6 | Reference: N/A | Payment created for order 6
+[2026-01-09 09:04:40] Action: CREATE | Payment ID: 12 | Transaction ID: 2 | Reference: N/A | Payment created for order 2
+[2026-01-09 09:04:51] Action: DELETE | Payment ID: 12 | Transaction ID:  | Reference:  | Payment deleted
