@@ -51,6 +51,7 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
     <ul class="nav nav-tabs" id="accountTabs" role="tablist">
         <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#customer">Customer Accounts</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#employee">Employee Accounts</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#user">User Accounts</button></li>
     </ul>
 
     <div class="tab-content mt-3">
@@ -104,6 +105,42 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
                             <td>
                                 <button class="btn btn-sm btn-primary editEmployeeBtn" data-id="<?= $e['employee_id'] ?>">Edit</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteEmployee(<?= $e['employee_id'] ?>)">Delete</button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- User Tab -->
+        <div class="tab-pane fade" id="user">
+            <div id="userTable">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Date Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $users = $pdo->query("SELECT * FROM users")->fetchAll(PDO::FETCH_ASSOC);
+                        foreach($users as $u):
+                        ?>
+                        <tr>
+                            <td><?= $u['user_id'] ?></td>
+                            <td><?= htmlspecialchars($u['username']) ?></td>
+                            <td><?= htmlspecialchars($u['role']) ?></td>
+                            <td><?= htmlspecialchars($u['status']) ?></td>
+                            <td><?= $u['date_created'] ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary editUserBtn" data-id="<?= $u['user_id'] ?>">Edit</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteUser(<?= $u['user_id'] ?>)">Delete</button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -225,6 +262,51 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
 
       </div>
 
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- User Edit Modal -->
+<div class="modal fade" id="editUserModal">
+  <div class="modal-dialog">
+    <form id="userForm" class="modal-content needs-validation" novalidate>
+      <div class="modal-header">
+        <h5 class="modal-title">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="action" value="update">
+        <input type="hidden" name="id">
+
+        <div class="mb-3">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+        </div>
+
+        <div class="mb-3">
+          <input type="password" name="password" class="form-control" placeholder="New Password (leave blank to keep)">
+        </div>
+
+        <div class="mb-3">
+          <label>Role</label>
+          <select name="role" class="form-select" required>
+              <option value="customer">Customer</option>
+              <option value="employee">Employee</option>
+              <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label>Status</label>
+          <select name="status" class="form-select" required>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Save</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

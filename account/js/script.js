@@ -97,3 +97,38 @@ function deleteCustomer(id){
 function deleteEmployee(id){
     if(confirm('Are you sure?')) $.post('employee_crud.php',{action:'delete',id:id},res=>$('#employeeTable').html(res));
 }
+
+// Edit User
+$(document).on('click', '.editUserBtn', function(){
+    let id = $(this).data('id');
+    let modal = $('#editUserModal');
+    let form = modal.find('form');
+
+    $.post('user_crud.php', {action:'fetch', id:id}, function(res){
+        let data = JSON.parse(res);
+        form.find('input[name="id"]').val(data.user_id);
+        form.find('input[name="username"]').val(data.username);
+        form.find('input[name="password"]').val('');
+        form.find('select[name="role"]').val(data.role);
+        form.find('select[name="status"]').val(data.status);
+
+        modal.modal('show');
+    });
+});
+
+// Delete User
+function deleteUser(id){
+    if(confirm('Are you sure?')) $.post('user_crud.php',{action:'delete',id:id},res=>{
+        $('#userTable').html(res);
+    });
+}
+
+// Submit form
+$('#userForm').on('submit', function(e){
+    e.preventDefault();
+    let form = $(this);
+    $.post('user_crud.php', form.serialize(), function(res){
+        $('#userTable').html(res);
+        $('#editUserModal').modal('hide');
+    });
+});
