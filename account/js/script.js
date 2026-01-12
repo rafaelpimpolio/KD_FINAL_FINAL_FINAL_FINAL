@@ -46,9 +46,11 @@ $(document).on('click', '.editCustomerBtn', function(){
         let data = JSON.parse(res);
 
         let modal = $('#createCustomerModal');
-        modal.find('input[name="action"]').val('update');
-        modal.find('input[name="id"]').remove();
-        modal.append('<input type="hidden" name="id" value="'+id+'">');
+        let form = modal.find('form');
+
+        form.find('input[name="action"]').val('update');
+        form.find('input[name="id"]').remove();
+        form.append('<input type="hidden" name="id" value="'+id+'">');
 
         modal.find('input[name="username"]').val(data.username);
         modal.find('input[name="password"]').val(''); // optional
@@ -73,9 +75,11 @@ $(document).on('click', '.editEmployeeBtn', function(){
         let data = JSON.parse(res);
 
         let modal = $('#createEmployeeModal');
-        modal.find('input[name="action"]').val('update');
-        modal.find('input[name="id"]').remove();
-        modal.append('<input type="hidden" name="id" value="'+id+'">');
+        let form = modal.find('form');
+
+        form.find('input[name="action"]').val('update');
+        form.find('input[name="id"]').remove();
+        form.append('<input type="hidden" name="id" value="'+id+'">');
 
         modal.find('input[name="username"]').val(data.username);
         modal.find('input[name="password"]').val(''); // optional

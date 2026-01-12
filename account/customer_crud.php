@@ -58,6 +58,47 @@ if ($action === 'create') {
     $stmt->execute([$id]);
     echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     exit;
+} elseif ($action === 'update') {
+    $id = $_POST['id'];
+
+    // Update customer data
+    $stmt = $pdo->prepare("
+        UPDATE customer SET
+        first_name=?, last_name=?, phone_number=?, email=?,
+        barangay=?, city_municipality=?, province=?, postal_code=?
+        WHERE customer_id=?
+    ");
+    $stmt->execute([
+        $_POST['first_name'],
+        $_POST['last_name'],
+        $_POST['phone_number'],
+        $_POST['email'],
+        $_POST['barangay'],
+        $_POST['city_municipality'],
+        $_POST['province'],
+        $_POST['postal_code'],
+        $id
+    ]);
+
+    // Update username
+    $stmt = $pdo->prepare("
+        UPDATE users
+        JOIN customer ON users.user_id = customer.user_id
+        SET users.username = ?
+        WHERE customer.customer_id = ?
+    ");
+    $stmt->execute([ $_POST['username'], $id ]);
+
+    // Update password only if filled
+    if (!empty($_POST['password'])) {
+        $stmt = $pdo->prepare("
+            UPDATE users
+            JOIN customer ON users.user_id = customer.user_id
+            SET users.password_hash = ?
+            WHERE customer.customer_id = ?
+        ");
+        $stmt->execute([ password_hash($_POST['password'], PASSWORD_DEFAULT), $id ]);
+    }
 } elseif ($action === 'delete') {
     $id = $_POST['id'];
 

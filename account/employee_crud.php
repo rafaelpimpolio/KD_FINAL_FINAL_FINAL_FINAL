@@ -24,7 +24,7 @@ if ($action === 'create') {
     }
 
     // Insert user
-    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'Employee')");
     $stmt->execute([
         $username,
         password_hash($_POST['password'], PASSWORD_DEFAULT)
@@ -53,6 +53,41 @@ if ($action === 'create') {
     $stmt->execute([$id]);
     echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     exit;
+}elseif ($action === 'update') {
+    $id = $_POST['id'];
+
+    // Update employee
+    $stmt = $pdo->prepare("
+        UPDATE employee SET
+        first_name=?, middle_initial=?, last_name=?
+        WHERE employee_id=?
+    ");
+    $stmt->execute([
+        $_POST['first_name'],
+        $_POST['middle_initial'],
+        $_POST['last_name'],
+        $id
+    ]);
+
+    // Update username
+    $stmt = $pdo->prepare("
+        UPDATE users
+        JOIN employee ON users.user_id = employee.user_id
+        SET users.username = ?
+        WHERE employee.employee_id = ?
+    ");
+    $stmt->execute([ $_POST['username'], $id ]);
+
+    // Update password only if filled
+    if (!empty($_POST['password'])) {
+        $stmt = $pdo->prepare("
+            UPDATE users
+            JOIN employee ON users.user_id = employee.user_id
+            SET users.password_hash = ?
+            WHERE employee.employee_id = ?
+        ");
+        $stmt->execute([ password_hash($_POST['password'], PASSWORD_DEFAULT), $id ]);
+    }
 } elseif ($action === 'delete') {
     $id = $_POST['id'];
     $stmt = $pdo->prepare("DELETE FROM employee WHERE employee_id=?");
