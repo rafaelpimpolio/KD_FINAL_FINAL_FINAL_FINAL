@@ -17,7 +17,6 @@
       <a href="#home" class="navbar-brand">KD Sportswear & Apparel</a>
       <ul class="navbar-menu" id="navbarMenu">
         <li><a href="../home.html#home" class="nav-link">Home</a></li>
-            <li><a href="../home.html#home" class="nav-link">Home</a></li>
         <li><a href="../home.html#latest-designs" class="nav-link">Latest Designs</a></li>
         <li><a href="../home.html#gallery" class="nav-link">Gallery</a></li>
         <li><a href="../home.html#services" class="nav-link">Services</a></li>
