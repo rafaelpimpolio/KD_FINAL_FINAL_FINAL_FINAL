@@ -1,59 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KD REGISTRATION USER</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KD USER REGISTRATION</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <form id="userForm" novalidate>
-      <h2>KD Register User</h2>
-      <input type="hidden" id="userId" />
+<div class="header">
+    <h1>KD USER REGISTRATION</h1>
+    <div class="sub">Sublimation • Custom Jerseys • Apparel Printing</div>
+</div>
 
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter username" />
-        <div class="error" id="usernameError"></div>
-      </div>
+<div class="form-container">
+    <h2>Registration Form</h2>
+    <form id="regForm">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username" class="form-control" placeholder="Enter username">
+            <span id="userError" class="error-msg">Username is too short (min 3).</span>
+        </div>
 
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" placeholder="09XXXXXXXXX" />
-        <div class="error" id="phoneError"></div>
-      </div>
+        <div class="form-group">
+            <label>Account Role</label>
+            <select id="userRole" class="form-control">
+                <option value="Customer">Customer</option>
+                <option value="Employee">Employee</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Active if filled, Inactive if empty" />
-        <div class="error" id="passwordError"></div>
-      </div>
+        <div class="form-group">
+            <label>PH Phone Number</label>
+            <input type="text" id="phone" class="form-control" placeholder="09xxxxxxxxx">
+            <span id="phoneError" class="error-msg">Invalid PH number (e.g. 09123456789).</span>
+        </div>
 
-      <button type="submit" id="submitBtn">Create User</button>
+        <div class="form-group">
+            <label>Password</label>
+            <div class="pass-wrapper">
+                <input type="password" id="pass" class="form-control">
+                <button type="button" class="toggle-pass" onclick="toggleVisibility('pass', 'eye1')" id="eye1">🙈</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <div class="pass-wrapper">
+                <input type="password" id="confirmPass" class="form-control">
+                <button type="button" class="toggle-pass" onclick="toggleVisibility('confirmPass', 'eye2')" id="eye2">🙈</button>
+            </div>
+            <span id="passError" class="error-msg">Passwords do not match.</span>
+        </div>
+
+        <button type="button" id="registerBtn" class="btn-primary">Register Account</button>
     </form>
+</div>
 
-    <div class="table-container">
-      <h2>User List</h2>
-      <table id="userTable">
+<div class="form-container" style="margin-top: 30px; max-width: 900px;">
+    <h2>Registered User List</h2>
+    <table id="customerTable" class="table-striped">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Phone</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
         </thead>
-        <tbody id="userTableBody">
-        </tbody>
-      </table>
-    </div>
-  </div>
+        <tbody></tbody>
+    </table>
+</div>
 
-  <script src="crud.js"></script>
+<script src="script.js"></script>
 </body>
-
 </html>
