@@ -1,0 +1,81 @@
+body {
+    background: linear-gradient(135deg, #0a1a2a, #003c5f);
+    font-family: 'Arial', sans-serif;
+    padding-bottom: 50px;
+    margin: 0;
+}
+
+.header {
+    text-align: center;
+    background: #ffffff;
+    padding: 20px 10px;
+    box-shadow: 0px 3px 10px rgba(0,0,0,0.25);
+    margin-bottom: 25px;
+    border-bottom: 5px solid #007bff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header h1 { font-size: 28px; font-weight: 800; color: #003b7a; margin: 0; }
+
+.form-container {
+    max-width: 400px;
+    margin: 120px auto 20px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(255,255,255,0.2);
+    border-top: 5px solid #007bff;
+}
+
+.form-group { margin-bottom: 15px; }
+label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Eye Toggle Styling */
+.pass-wrapper { position: relative; display: flex; align-items: center; }
+.toggle-pass {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #888;
+}
+
+.error-msg { color: #d9534f; font-size: 12px; display: none; margin-top: 5px; }
+
+.btn-primary {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#customerTable { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+#customerTable th { background: #f8f9fa; padding: 12px; border-bottom: 2px solid #007bff; text-align: left; }
+#customerTable td { padding: 12px; border-bottom: 1px solid #eee; color: black; }
+
+/* Role Badges */
+.role-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+.role-admin { background: #f8d7da; color: #721c24; }
+.role-employee { background: #d1ecf1; color: #0c5460; }
+.role-customer { background: #d4edda; color: #155724; }
+
+.edit-btn { background: #ffc107; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+.del-btn { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
