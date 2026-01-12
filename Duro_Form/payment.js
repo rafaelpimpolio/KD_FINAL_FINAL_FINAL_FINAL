@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // -----------------------------
-    // Load payment records
-    // -----------------------------
     const paymentForm = document.getElementById("paymentForm");
     const tableBody = document.getElementById("paymentTableBody");
 
@@ -13,14 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     loadPayments();
 
-    // -----------------------------
     // Handle form submit via AJAX
-    // -----------------------------
     paymentForm.addEventListener("submit", e => {
         e.preventDefault();
         const formData = new FormData(paymentForm);
 
-        // Determine if this is create or update
         const action = formData.get("payment_id") ? "update" : "create";
 
         fetch(`payment_crud.php?action=${action}`, {
@@ -29,16 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(res => res.text())
         .then(msg => {
-            alert(msg.replace(/(<([^>]+)>)/gi, "")); // remove HTML tags
+            // Updated: only show clean message, no HTML stripping
+            alert(msg);
             paymentForm.reset();
             loadPayments();
         })
         .catch(err => console.error(err));
     });
 
-    // -----------------------------
     // Customer autocomplete
-    // -----------------------------
     const customerSearch  = document.getElementById('customerSearch');
     const customerResults = document.getElementById('customerResults');
     const customerIdInput = document.getElementById('customer_id');
@@ -46,8 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     customerSearch.addEventListener('input', async () => {
         const query = customerSearch.value.trim();
-
-        if (query.length === 0) {
+        if (!query.length) {
             customerResults.innerHTML = '';
             orderSelect.innerHTML = `<option value="">-- Select order --</option>`;
             return;
@@ -65,11 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             item.addEventListener('click', e => {
                 e.preventDefault();
-
                 customerSearch.value = customer.full_name;
                 customerIdInput.value = customer.customer_id;
                 customerResults.innerHTML = '';
-
                 loadCustomerOrders(customer.customer_id);
             });
 
@@ -83,16 +73,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // -----------------------------
-    // Load orders for selected customer
-    // -----------------------------
     async function loadCustomerOrders(customerId) {
         orderSelect.innerHTML = `<option value="">Loading orders...</option>`;
-
         try {
             const res = await fetch(`fetch_customer_orders.php?customer_id=${customerId}`);
             const orders = await res.json();
-
             if (!orders.length) {
                 orderSelect.innerHTML = `<option value="">No FOR PAYMENT orders</option>`;
                 return;
@@ -106,16 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     `Order #${order.order_id} | Inquiry ${order.inquiry_id} | ₱${order.total_amount} | ${order.created_at}`;
                 orderSelect.appendChild(opt);
             });
-
         } catch (err) {
             console.error(err);
             orderSelect.innerHTML = `<option value="">Error loading orders</option>`;
         }
     }
 
-    // -----------------------------
     // Delegate table actions (Delete & Edit)
-    // -----------------------------
     tableBody.addEventListener("click", e => {
 
         // Delete button
@@ -126,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             fetch(e.target.href)
             .then(res => res.text())
             .then(msg => {
-                alert(msg.replace(/(<([^>]+)>)/gi, ""));
+                alert(msg); // <-- clean alert
                 loadPayments();
             })
             .catch(err => console.error(err));
@@ -137,12 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const payment = JSON.parse(e.target.dataset.payment);
 
-            // Fill the form with payment data
             paymentForm.payment_id.value = payment.payment_id;
             document.getElementById("customerSearch").value = payment.customer_name;
             document.getElementById("customer_id").value = payment.customer_id;
 
-            // Load orders for this customer and select the correct one
             loadCustomerOrders(payment.customer_id).then(() => {
                 document.getElementById("orderSelect").value = payment.order_id;
             });
@@ -159,9 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // -----------------------------
     // Logout confirmation
-    // -----------------------------
     window.confirmLogout = function(event) {
         event.preventDefault();
         if(confirm('Are you sure you want to logout?')) {

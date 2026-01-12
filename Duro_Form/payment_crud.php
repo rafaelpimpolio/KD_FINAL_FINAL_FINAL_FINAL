@@ -33,7 +33,7 @@ function handleCreate() {
     $date        = $_POST['date'] ?? date('Y-m-d');
 
     if ($customer_id <= 0 || $order_id <= 0) {
-        showAlert("danger", "Please select a customer and an order.");
+        showAlert("danger", "Please select a customer and an order.", true);
     }
 
     // Get selected order details
@@ -44,7 +44,7 @@ function handleCreate() {
     $res_order = $stmt_order->get_result();
 
     if ($res_order->num_rows === 0) {
-        showAlert("danger", "Selected order is not available for payment.");
+        showAlert("danger", "Selected order is not available for payment.", true);
     }
 
     $row = $res_order->fetch_assoc();
@@ -73,9 +73,9 @@ function handleCreate() {
 
     if ($stmt->execute()) {
         writeLog("CREATE", $stmt->insert_id, $order_id, "N/A", "Payment created for order $order_id");
-        showAlert("success", "Payment recorded successfully.");
+        showAlert("success", "Payment recorded successfully.", true);
     } else {
-        showAlert("danger", "Error creating payment: " . $stmt->error);
+        showAlert("danger", "Error creating payment: " . $stmt->error, true);
     }
 
     $stmt->close();
@@ -103,32 +103,33 @@ function handleRead() {
         return;
     }
 
-   while ($row = $result->fetch_assoc()) {
-    echo '<tr>
-        <td>'.htmlspecialchars($row['payment_id']).'</td>
-        <td>'.htmlspecialchars($row['order_id']).'</td>
-        <td>'.htmlspecialchars($row['customer_name']).'</td>
-        <td>'.htmlspecialchars($row['method_of_payment']).'</td>
-        <td>'.htmlspecialchars($row['total_amount']).'</td>
-        <td>'.htmlspecialchars($row['downpayment']).'</td>
-        <td>'.htmlspecialchars($row['balance']).'</td>
-        <td>'.htmlspecialchars($row['date']).'</td>
-        <td>'.htmlspecialchars($row['status']).'</td>
-        <td>    
-            <a href="#"
-               class="btn btn-sm btn-warning btn-edit"
-               data-payment="'.htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8').'">
-               Edit
-            </a>
-            <a href="payment_crud.php?action=delete&id='.htmlspecialchars($row['payment_id']).'"
-               class="btn btn-sm btn-danger"
-               onclick="return confirm(\'Delete this payment?\')">
-               Delete
-            </a>
-        </td>
-    </tr>';
-}
-
+    while ($row = $result->fetch_assoc()) {
+        // Use htmlspecialchars only on text, not on numbers or JSON
+        $paymentJson = json_encode($row, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        echo '<tr>
+            <td>'.htmlspecialchars($row['payment_id']).'</td>
+            <td>'.htmlspecialchars($row['order_id']).'</td>
+            <td>'.htmlspecialchars($row['customer_name']).'</td>
+            <td>'.htmlspecialchars($row['method_of_payment']).'</td>
+            <td>'.htmlspecialchars($row['total_amount']).'</td>
+            <td>'.htmlspecialchars($row['downpayment']).'</td>
+            <td>'.htmlspecialchars($row['balance']).'</td>
+            <td>'.htmlspecialchars($row['date']).'</td>
+            <td>'.htmlspecialchars($row['status']).'</td>
+            <td style="white-space: nowrap;">
+                <a href="#"
+                   class="btn btn-sm btn-warning btn-edit"
+                   data-payment=\''. $paymentJson .'\'>
+                   Edit
+                </a>
+                <a href="payment_crud.php?action=delete&id='.intval($row['payment_id']).'"
+                   class="btn btn-sm btn-danger"
+                   style="margin-left:5px;">
+                   Delete
+                </a>
+            </td>
+        </tr>';
+    }
 }
 
 /* =========================
@@ -145,9 +146,9 @@ function handleDelete() {
 
     if ($stmt->execute()) {
         writeLog("DELETE", $id, "", "", "Payment deleted");
-        showAlert("success", "Payment deleted.");
+        showAlert("success", "Payment deleted.", true);
     } else {
-        showAlert("danger", "Error deleting payment.");
+        showAlert("danger", "Error deleting payment.", true);
     }
 
     $stmt->close();
@@ -156,15 +157,23 @@ function handleDelete() {
 /* =========================
    ALERT
 ========================= */
-function showAlert($type, $message) {
-    $redirect = $_SERVER['HTTP_REFERER'] ?? 'payment.html'; // go back to previous page
-    ?>
-    <script>
-    alert("<?= strip_tags($message) ?>");
-    window.location.href = "<?= $redirect ?>";
-    </script>
-    <?php
-    exit();
+function showAlert($type, $message, $ajax = false) {
+    if ($ajax || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')) {
+        // For AJAX: return plain message only
+        echo $message;
+        exit();
+    } else {
+        // Non-AJAX fallback (keep your original behavior)
+        $redirect = $_SERVER['HTTP_REFERER'] ?? 'payment.html';
+        ?>
+        <script>
+        alert("<?= strip_tags($message) ?>");
+        window.location.href = "<?= $redirect ?>";
+        </script>
+        <?php
+        exit();
+    }
 }
+
 $conn->close();
 ?>

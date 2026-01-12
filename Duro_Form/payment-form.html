@@ -165,64 +165,6 @@
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script>
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const paymentForm = document.getElementById("paymentForm");
-    const tableBody = document.getElementById("paymentTableBody");
-
-    function loadPayments(){
-        fetch("payment_crud.php?action=read")
-        .then(res => res.text())
-        .then(html => tableBody.innerHTML = html);
-    }
-    loadPayments();
-
-    // Handle form submit via AJAX
-    paymentForm.addEventListener("submit", e => {
-        e.preventDefault();
-        const formData = new FormData(paymentForm);
-
-        fetch("payment_crud.php?action=create", {
-            method: "POST",
-            body: formData
-        })
-        .then(res => res.text())
-        .then(msg => {
-            alert(msg.replace(/(<([^>]+)>)/gi, "")); // remove HTML tags
-            paymentForm.reset();
-            loadPayments(); // reload table
-        })
-        .catch(err => console.error(err));
-    });
-
-    // Delegate delete button clicks
-    tableBody.addEventListener("click", e => {
-        if(e.target.matches(".btn-danger")){
-            e.preventDefault();
-            if(!confirm("Delete this payment?")) return;
-
-            fetch(e.target.href)
-            .then(res => res.text())
-            .then(msg => {
-                alert(msg.replace(/(<([^>]+)>)/gi, ""));
-                loadPayments();
-            })
-            .catch(err => console.error(err));
-        }
-    });
-});
-
-    // Logout confirmation
-function confirmLogout(event) {
-    event.preventDefault();
-    if(confirm('Are you sure you want to logout?')) {
-        window.location.href = '../login_signup.html';
-    }
-}
-</script>
-
 
 
 <script src="payment.js"></script>

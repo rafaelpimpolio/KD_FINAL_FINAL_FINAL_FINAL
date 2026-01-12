@@ -24,3 +24,15 @@
 [2026-01-12 13:18:01] Action: CREATE | Payment ID: 13 | Transaction ID: 6 | Reference: N/A | Payment created for order 6
 [2026-01-12 13:19:03] Action: DELETE | Payment ID: 11 | Transaction ID:  | Reference:  | Payment deleted
 [2026-01-12 13:19:05] Action: DELETE | Payment ID: 11 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 15:59:47] Action: DELETE | Payment ID: 16 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 15:59:48] Action: DELETE | Payment ID: 16 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:05:30] Action: DELETE | Payment ID: 13 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:05:32] Action: DELETE | Payment ID: 13 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:06:02] Action: CREATE | Payment ID: 17 | Transaction ID: 6 | Reference: N/A | Payment created for order 6
+[2026-01-12 16:06:02] Action: CREATE | Payment ID: 18 | Transaction ID: 6 | Reference: N/A | Payment created for order 6
+[2026-01-12 16:06:42] Action: DELETE | Payment ID: 18 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:09:39] Action: DELETE | Payment ID: 17 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:09:47] Action: DELETE | Payment ID: 10 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:10:10] Action: CREATE | Payment ID: 19 | Transaction ID: 6 | Reference: N/A | Payment created for order 6
+[2026-01-12 16:11:42] Action: DELETE | Payment ID: 19 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-12 16:12:05] Action: CREATE | Payment ID: 20 | Transaction ID: 5 | Reference: N/A | Payment created for order 5
