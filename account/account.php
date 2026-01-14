@@ -102,7 +102,7 @@ $employees = $pdo->query("
                     <tbody>
                         <?php foreach($employees as $e): ?>
                         <tr>
-                            <td><?= $e['user_id'] ?></td>
+                            <td><?= $e['employee_id'] ?></td>
                             <td><?= htmlspecialchars($e['username']) ?></td>
                             <td><?= htmlspecialchars($e['first_name']) ?></td>
                             <td><?= htmlspecialchars($e['middle_initial']) ?></td>

@@ -96,7 +96,7 @@ if ($action === 'create') {
 
 // Return updated table
 $employees = $pdo->query("
-    SELECT employee.*, users.username, users.user_id
+    SELECT employee.*, users.username
     FROM employee 
     JOIN users ON employee.user_id = users.user_id
 ")->fetchAll(PDO::FETCH_ASSOC);
@@ -111,7 +111,7 @@ $employees = $pdo->query("
 <tbody>
 <?php foreach($employees as $e): ?>
 <tr>
-<td><?= $e['user_id'] ?></td>
+<td><?= $e['employee_id'] ?></td>
 <td><?= htmlspecialchars($e['username']) ?></td>
 <td><?= htmlspecialchars($e['first_name']) ?></td>
 <td><?= htmlspecialchars($e['middle_initial']) ?></td>
