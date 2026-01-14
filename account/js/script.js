@@ -132,3 +132,32 @@ $('#userForm').on('submit', function(e){
         $('#editUserModal').modal('hide');
     });
 });
+
+function attachPasswordValidation(form) {
+    const password = form.querySelector('input[name="password"]');
+    const confirm = form.querySelector('input[name="confirm_password"]');
+
+    if (!password || !confirm) return;
+
+    function validate() {
+        // If password is empty (editing user), allow it
+        if (password.value === "") {
+            confirm.setCustomValidity("");
+            return;
+        }
+
+        if (password.value !== confirm.value) {
+            confirm.setCustomValidity("Passwords do not match");
+        } else {
+            confirm.setCustomValidity("");
+        }
+    }
+
+    password.addEventListener("input", validate);
+    confirm.addEventListener("input", validate);
+}
+
+attachPasswordValidation(document.getElementById("customerForm"));
+attachPasswordValidation(document.getElementById("employeeForm"));
+attachPasswordValidation(document.getElementById("userForm"));
+

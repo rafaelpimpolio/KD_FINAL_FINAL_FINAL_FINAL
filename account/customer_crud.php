@@ -116,26 +116,26 @@ $customers = $pdo->query("
 ?>
 
 <table class="table table-bordered table-striped">
-<thead class="table-dark">
-<tr>
-<th>ID</th><th>Username</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th>
-</tr>
-</thead>
-<tbody>
-<?php foreach($customers as $c): ?>
-<tr>
-<td><?= $c['customer_id'] ?></td>
-<td><?= htmlspecialchars($c['username']) ?></td>
-<td><?= htmlspecialchars($c['first_name']) ?></td>
-<td><?= htmlspecialchars($c['last_name']) ?></td>
-<td><?= htmlspecialchars($c['phone_number']) ?></td>
-<td><?= htmlspecialchars($c['email']) ?></td>
-<td><?= htmlspecialchars($c['barangay'].', '.$c['city_municipality'].', '.$c['province'].' '.$c['postal_code']) ?></td>
-<td>
-<button class="btn btn-sm btn-primary editCustomerBtn" data-id="<?= $c['customer_id'] ?>">Edit</button>
-<button class="btn btn-sm btn-danger" onclick="deleteCustomer(<?= $c['customer_id'] ?>)">Delete</button>
-</td>
-</tr>
-<?php endforeach; ?>
-</tbody>
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th><th>Username</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($customers as $c): ?>
+        <tr>
+            <td><?= $c['customer_id'] ?></td>
+            <td><?= htmlspecialchars($c['username']) ?></td>
+            <td><?= htmlspecialchars($c['first_name']) ?></td>
+            <td><?= htmlspecialchars($c['last_name']) ?></td>
+            <td><?= htmlspecialchars($c['phone_number']) ?></td>
+            <td><?= htmlspecialchars($c['email']) ?></td>
+            <td><?= htmlspecialchars($c['barangay'].', '.$c['city_municipality'].', '.$c['province'].' '.$c['postal_code']) ?></td>
+            <td>
+            <button class="btn btn-sm btn-primary editCustomerBtn" data-id="<?= $c['customer_id'] ?>">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteCustomer(<?= $c['customer_id'] ?>)">Delete</button>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>

@@ -212,6 +212,11 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
           <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="invalid-feedback">Password is required for new accounts.</div>
         </div>
+
+        <div class="mb-3">
+            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password">
+        </div>
+
       </div>
 
       <div class="modal-footer">
@@ -221,7 +226,6 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
     </form>
   </div>
 </div>
-
 
 <!-- Employee Modal -->
 <div class="modal fade" id="createEmployeeModal">
@@ -258,6 +262,10 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
         <div class="mb-3">
           <input type="password" name="password" class="form-control" placeholder="Password">
           <div class="invalid-feedback">Password is required for new accounts.</div>
+        </div>
+        
+        <div class="mb-3">
+            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password">
         </div>
 
       </div>
