@@ -1,14 +1,11 @@
 <?php
 require_once __DIR__ . '/connect.php';
 
-// 🔒 ERROR TRAP: force JSON for AJAX errors
-header('X-Content-Type-Options: nosniff');
-
 $action = $_GET['action'] ?? $_POST['action'] ?? 'read';
 
 switch ($action) {
     case 'create':
-        handleCreate();
+        handleCreate(); // ✅ EMPLOYEE ID FIX inside function
         break;
     case 'read':
         handleRead();
@@ -17,7 +14,7 @@ switch ($action) {
         handleEdit();
         break;
     case 'update':
-        handleUpdate();
+        handleUpdate(); // ✅ EMPLOYEE ID FIX inside function
         break;
     case 'delete':
         handleDelete();
@@ -32,47 +29,22 @@ switch ($action) {
 function handleCreate() {
     global $conn;
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        showAlert("danger", "Invalid request method.", true); // 🔒 ERROR TRAP
-    }
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
     $customer_id = intval($_POST['customer_id'] ?? 0);
     $order_id    = intval($_POST['order_id'] ?? 0);
-    $method      = trim($_POST['method_of_payment'] ?? '');
-    $downpayment = floatval($_POST['downpayment'] ?? -1);
-    $status      = trim($_POST['status'] ?? 'PENDING');
+    $method      = $_POST['method_of_payment'] ?? 'CASH';
+    $downpayment = floatval($_POST['downpayment'] ?? 0.00);
+    $status      = $_POST['status'] ?? 'PENDING';
     $date        = $_POST['date'] ?? date('Y-m-d');
 
-    // 🔒 ERROR TRAPS
-    if ($customer_id <= 0) {
-        showAlert("danger", "Customer is required.", true);
+    if ($customer_id <= 0 || $order_id <= 0) {
+        showAlert("danger", "Please select a customer and an order.", true);
     }
 
-    if ($order_id <= 0) {
-        showAlert("danger", "Order selection is required.", true);
-    }
-
-    if ($method === '') {
-        showAlert("danger", "Method of payment is required.", true);
-    }
-
-    if ($downpayment < 0) {
-        showAlert("danger", "Downpayment must be zero or greater.", true);
-    }
-
-    
-    if (!strtotime($date)) {
-        showAlert("danger", "Invalid payment date.", true);
-    }
-
-    // FETCH ORDER
+    // Get selected order details
     $sql_order = "SELECT total_amount, employee_id FROM orders WHERE order_id=? AND status='FOR PAYMENT'";
     $stmt_order = $conn->prepare($sql_order);
-
-    if (!$stmt_order) {
-        showAlert("danger", "Order validation failed.", true); // 🔒 ERROR TRAP
-    }
-
     $stmt_order->bind_param("i", $order_id);
     $stmt_order->execute();
     $res_order = $stmt_order->get_result();
@@ -83,36 +55,33 @@ function handleCreate() {
 
     $row = $res_order->fetch_assoc();
     $total_amount = floatval($row['total_amount']);
-    $employee_id  = $row['employee_id'];
 
-    if ($downpayment > $total_amount) {
-        showAlert("danger", "Downpayment cannot exceed total amount.", true);
+    // ✅ EMPLOYEE ID FIX: read from form if provided, else fallback to order
+    $employee_id = intval($_POST['employee_id'] ?? 0);
+    if ($employee_id <= 0) {
+        $employee_id = $row['employee_id'] ?? null;
+    }
+
+    // 🔒 ERROR TRAP
+    if ($employee_id === null) {
+        showAlert("danger", "Employee ID is required.", true);
     }
 
     $balance = $total_amount - $downpayment;
 
-    // 🔒 ERROR TRAP: database transaction
-    if (!$conn->begin_transaction()) {
-        showAlert("danger", "Unable to start transaction.", true);
-    }
-
+    // Insert payment for only that selected order
+    $conn->begin_transaction();
     try {
         $sql = "INSERT INTO payment
-                (customer_id, order_id, employee_id, method_of_payment,
-                 total_amount, downpayment, balance, date, status)
+                (customer_id, order_id, employee_id, method_of_payment, total_amount, downpayment, balance, date, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($sql);
-
-        if (!$stmt) {
-            throw new Exception("Insert prepare failed");
-        }
-
         $stmt->bind_param(
             "iiisdddss",
             $customer_id,
             $order_id,
-            $employee_id,
+            $employee_id, // ✅ EMPLOYEE ID FIX
             $method,
             $total_amount,
             $downpayment,
@@ -122,19 +91,14 @@ function handleCreate() {
         );
 
         if (!$stmt->execute()) {
-            throw new Exception("Insert execution failed");
+            throw new Exception($stmt->error);
         }
 
         $payment_id = $stmt->insert_id;
 
-        // UPDATE ORDER STATUS
+        // Update order status
         $orderStatus = ($balance <= 0) ? 'PAID' : 'PARTIAL';
         $stmt2 = $conn->prepare("UPDATE orders SET status=? WHERE order_id=?");
-
-        if (!$stmt2) {
-            throw new Exception("Order update failed");
-        }
-
         $stmt2->bind_param("si", $orderStatus, $order_id);
         $stmt2->execute();
 
@@ -145,9 +109,10 @@ function handleCreate() {
 
     } catch (Exception $e) {
         $conn->rollback();
-        writeLog("CREATE_FAILED", null, $order_id, null, $e->getMessage());
-        showAlert("danger", "Payment failed. Please try again.", true);
+        showAlert("danger", "Payment failed: " . $e->getMessage(), true);
     }
+
+    $stmt->close();
 }
 
 /* =========================
@@ -156,43 +121,47 @@ function handleCreate() {
 function handleRead() {
     global $conn;
 
-    $result = $conn->query("
-        SELECT p.*, CONCAT(c.first_name,' ',c.last_name) AS customer_name
+    $sql = "
+        SELECT 
+            p.*,
+            CONCAT(c.first_name, ' ', c.last_name) AS customer_name
         FROM payment p
-        LEFT JOIN customer c ON p.customer_id=c.customer_id
+        LEFT JOIN customer c ON p.customer_id = c.customer_id
         ORDER BY p.payment_id DESC
-    ");
+    ";
 
-    if (!$result) {
-        echo '<tr><td colspan="10" class="text-danger">Error loading payments.</td></tr>'; // 🔒 ERROR TRAP
-        return;
-    }
+    $result = $conn->query($sql);
 
-    if ($result->num_rows === 0) {
-        echo '<tr><td colspan="10" class="text-muted text-center">No payment records found.</td></tr>';
+    if (!$result || $result->num_rows === 0) {
+        echo '<tr><td colspan="10" class="text-center text-muted">No payment records found.</td></tr>';
         return;
     }
 
     while ($row = $result->fetch_assoc()) {
-        $json = json_encode($row);
-        echo "<tr>
-            <td>{$row['payment_id']}</td>
-            <td>{$row['order_id']}</td>
-            <td>{$row['customer_name']}</td>
-            <td>{$row['method_of_payment']}</td>
-            <td>{$row['total_amount']}</td>
-            <td>{$row['downpayment']}</td>
-            <td>{$row['balance']}</td>
-            <td>{$row['date']}</td>
-            <td>{$row['status']}</td>
-            <td>
-                <button class='btn btn-warning btn-sm btn-edit'
-                        data-payment='{$json}'>Edit</button>
-                <a class='btn btn-danger btn-sm'
-                   onclick='return confirm(\"Delete this payment?\")'
-                   href='payment_crud.php?action=delete&id={$row['payment_id']}'>Delete</a>
+        $paymentJson = json_encode($row, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        echo '<tr>
+            <td>'.htmlspecialchars($row['payment_id']).'</td>
+            <td>'.htmlspecialchars($row['order_id']).'</td>
+            <td>'.htmlspecialchars($row['customer_name']).'</td>
+            <td>'.htmlspecialchars($row['method_of_payment']).'</td>
+            <td>'.htmlspecialchars($row['total_amount']).'</td>
+            <td>'.htmlspecialchars($row['downpayment']).'</td>
+            <td>'.htmlspecialchars($row['balance']).'</td>
+            <td>'.htmlspecialchars($row['date']).'</td>
+            <td>'.htmlspecialchars($row['status']).'</td>
+            <td style="white-space: nowrap;">
+                <a href="#"
+                   class="btn btn-sm btn-warning btn-edit"
+                   data-payment=\''. $paymentJson .'\'>
+                   Edit
+                </a>
+                <a href="payment_crud.php?action=delete&id='.intval($row['payment_id']).'"
+                   class="btn btn-sm btn-danger"
+                   style="margin-left:5px;">
+                   Delete
+                </a>
             </td>
-        </tr>";
+        </tr>';
     }
 }
 
@@ -205,23 +174,17 @@ function handleEdit() {
     header('Content-Type: application/json');
 
     $id = intval($_GET['id'] ?? 0);
-
     if ($id <= 0) {
-        echo json_encode([]); // 🔒 ERROR TRAP
+        echo json_encode([]);
         exit;
     }
 
     $stmt = $conn->prepare("SELECT * FROM payment WHERE payment_id=?");
-
-    if (!$stmt) {
-        echo json_encode([]); // 🔒 ERROR TRAP
-        exit;
-    }
-
     $stmt->bind_param("i", $id);
     $stmt->execute();
+    $result = $stmt->get_result();
 
-    echo json_encode($stmt->get_result()->fetch_assoc() ?: []);
+    echo json_encode($result->fetch_assoc() ?: []);
 }
 
 /* =========================
@@ -230,26 +193,20 @@ function handleEdit() {
 function handleUpdate() {
     global $conn;
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        showAlert("danger", "Invalid update request.", true); // 🔒 ERROR TRAP
-    }
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
     $payment_id  = intval($_POST['payment_id'] ?? 0);
-    $downpayment = floatval($_POST['downpayment'] ?? -1);
-    $method      = trim($_POST['method_of_payment'] ?? '');
-    $status      = trim($_POST['status'] ?? '');
+    $downpayment = floatval($_POST['downpayment'] ?? 0);
+    $method      = $_POST['method_of_payment'] ?? '';
+    $status      = $_POST['status'] ?? '';
     $date        = $_POST['date'] ?? date('Y-m-d');
 
-    if ($payment_id <= 0 || $downpayment < 0 || $method === '') {
-        showAlert("danger", "Invalid update data.", true); // 🔒 ERROR TRAP
+    if ($payment_id <= 0) {
+        showAlert("danger", "Invalid payment ID.", true);
     }
 
-    $stmt = $conn->prepare("SELECT order_id, total_amount FROM payment WHERE payment_id=?");
-
-    if (!$stmt) {
-        showAlert("danger", "Payment lookup failed.", true); // 🔒 ERROR TRAP
-    }
-
+    // Fetch existing payment
+    $stmt = $conn->prepare("SELECT order_id, total_amount, employee_id FROM payment WHERE payment_id=?");
     $stmt->bind_param("i", $payment_id);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -268,11 +225,20 @@ function handleUpdate() {
 
     $balance = $total_amount - $downpayment;
 
-    $conn->begin_transaction();
+    // ✅ EMPLOYEE ID FIX for UPDATE
+    $employee_id = intval($_POST['employee_id'] ?? 0);
+    if ($employee_id <= 0) {
+        $employee_id = $row['employee_id'] ?? null;
+    }
+    if ($employee_id === null) {
+        showAlert("danger", "Employee ID is required.", true);
+    }
 
+    $conn->begin_transaction();
     try {
         $stmt = $conn->prepare("
             UPDATE payment SET
+                employee_id=?,
                 method_of_payment=?,
                 downpayment=?,
                 balance=?,
@@ -281,13 +247,20 @@ function handleUpdate() {
             WHERE payment_id=?
         ");
 
-        if (!$stmt) {
-            throw new Exception("Update prepare failed");
-        }
+        $stmt->bind_param(
+            "isddssi",
+            $employee_id, // ✅ EMPLOYEE ID FIX
+            $method,
+            $downpayment,
+            $balance,
+            $date,
+            $status,
+            $payment_id
+        );
 
-        $stmt->bind_param("sddssi", $method, $downpayment, $balance, $date, $status, $payment_id);
         $stmt->execute();
 
+        // Update order status
         $orderStatus = ($balance <= 0) ? 'PAID' : 'PARTIAL';
         $stmt2 = $conn->prepare("UPDATE orders SET status=? WHERE order_id=?");
         $stmt2->bind_param("si", $orderStatus, $order_id);
@@ -300,7 +273,6 @@ function handleUpdate() {
 
     } catch (Exception $e) {
         $conn->rollback();
-        writeLog("UPDATE_FAILED", $payment_id, $order_id, null, $e->getMessage());
         showAlert("danger", "Update failed.", true);
     }
 }
@@ -312,44 +284,38 @@ function handleDelete() {
     global $conn;
 
     $id = intval($_GET['id'] ?? 0);
-
-    if ($id <= 0) {
-        showAlert("danger", "Invalid payment ID.", true); // 🔒 ERROR TRAP
-    }
+    if ($id <= 0) return;
 
     $stmt = $conn->prepare("DELETE FROM payment WHERE payment_id=?");
-
-    if (!$stmt) {
-        showAlert("danger", "Delete failed.", true); // 🔒 ERROR TRAP
-    }
-
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
         writeLog("DELETE", $id, null, null, "Payment deleted");
         showAlert("success", "Payment deleted.", true);
     } else {
-        showAlert("danger", "Unable to delete payment.", true);
+        showAlert("danger", "Error deleting payment.", true);
     }
+
+    $stmt->close();
 }
 
 /* =========================
-   ALERT HANDLER
+   ALERT
 ========================= */
 function showAlert($type, $message, $ajax = false) {
-    if ($ajax) {
+    if ($ajax || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')) {
         echo $message;
         exit();
-    }
-
-    $redirect = $_SERVER['HTTP_REFERER'] ?? 'payment.html';
-    ?>
-    <script>
+    } else {
+        $redirect = $_SERVER['HTTP_REFERER'] ?? 'payment.html';
+        ?>
+        <script>
         alert("<?= strip_tags($message) ?>");
         window.location.href = "<?= $redirect ?>";
-    </script>
-    <?php
-    exit();
+        </script>
+        <?php
+        exit();
+    }
 }
 
 $conn->close();
