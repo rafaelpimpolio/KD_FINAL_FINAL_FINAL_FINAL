@@ -83,3 +83,21 @@
 [2026-01-14 13:36:26] Action: UPDATE | Payment ID: 26 | Transaction ID: 7 | Reference:  | Payment updated
 [2026-01-14 13:45:26] Action: CREATE | Payment ID: 27 | Transaction ID: 5 | Reference:  | Payment created
 [2026-01-14 13:47:04] Action: UPDATE | Payment ID: 22 | Transaction ID: 7 | Reference:  | Payment updated
+[2026-01-14 14:23:20] Action: CREATE | Payment ID: 14 | Transaction ID: 2 | Reference: N/A | Payment created
+[2026-01-14 14:24:53] Action: CREATE | Payment ID: 16 | Transaction ID: 4 | Reference: N/A | Payment created
+[2026-01-14 14:25:13] Action: UPDATE | Payment ID: 16 | Transaction ID: 4 | Reference:  | Payment updated
+[2026-01-14 14:25:22] Action: UPDATE | Payment ID: 16 | Transaction ID: 4 | Reference:  | Payment updated
+[2026-01-14 14:25:39] Action: UPDATE | Payment ID: 14 | Transaction ID: 2 | Reference:  | Payment updated
+[2026-01-14 14:27:07] Action: DELETE | Payment ID: 16 | Transaction ID:  | Reference:  | Payment deleted
+[2026-01-14 14:27:23] Action: UPDATE | Payment ID: 14 | Transaction ID: 2 | Reference:  | Payment updated
+[2026-01-14 14:27:58] Action: UPDATE | Payment ID: 14 | Transaction ID: 2 | Reference:  | Payment updated
+[2026-01-14 14:34:26] Action: UPDATE | Payment ID: 11 | Transaction ID: 6 | Reference:  | Payment updated
+[2026-01-14 14:34:34] Action: UPDATE_FAILED | Payment ID: 11 | Transaction ID: 6 | Reference:  | Cannot add or update a child row: a foreign key constraint fails (`kd_sportswear`.`payment`, CONSTRAINT `fk_payment_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`) ON DELETE SET NULL)
+[2026-01-14 14:34:44] Action: UPDATE | Payment ID: 11 | Transaction ID: 6 | Reference:  | Payment updated
+[2026-01-14 14:34:52] Action: UPDATE | Payment ID: 10 | Transaction ID: 2 | Reference:  | Payment updated
+[2026-01-14 14:34:59] Action: UPDATE_FAILED | Payment ID: 10 | Transaction ID: 2 | Reference:  | Cannot add or update a child row: a foreign key constraint fails (`kd_sportswear`.`payment`, CONSTRAINT `fk_payment_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`) ON DELETE SET NULL)
+[2026-01-14 14:35:06] Action: UPDATE | Payment ID: 10 | Transaction ID: 2 | Reference:  | Payment updated
+[2026-01-14 14:37:09] Action: UPDATE | Payment ID: 10 | Transaction ID: 2 | Reference:  | Payment updated
+[2026-01-14 14:37:37] Action: UPDATE | Payment ID: 11 | Transaction ID: 6 | Reference:  | Payment updated
+[2026-01-14 14:37:57] Action: UPDATE_FAILED | Payment ID: 10 | Transaction ID: 2 | Reference:  | Cannot add or update a child row: a foreign key constraint fails (`kd_sportswear`.`payment`, CONSTRAINT `fk_payment_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`) ON DELETE SET NULL)
+[2026-01-14 14:38:16] Action: UPDATE | Payment ID: 11 | Transaction ID: 6 | Reference:  | Payment updated

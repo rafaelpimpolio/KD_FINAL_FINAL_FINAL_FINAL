@@ -21,7 +21,6 @@
             <li><a href="../Duro_Form/payment-form.html" class="nav-link">Payment</a></li>
             <li><a href="../account/account.php" class="nav-link">Account</a></li>
             <li><a href="#" class="nav-link logout-link" onclick="confirmLogout(event)">Logout</a></li>
-
         </ul>
         <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
             <span id="menuIcon">☰</span>
@@ -47,7 +46,6 @@
 <input type="hidden" name="payment_id">
 
 <!-- Customer Autocomplete -->
-<!-- Customer -->
 <div class="mb-3 position-relative">
     <label class="form-label">Customer</label>
     <input
@@ -76,7 +74,6 @@
         <option value="">-- Select order --</option>
     </select>
 </div>
-
 
 <div class="mb-3">
 <label class="form-label">Employee ID</label>
@@ -139,6 +136,7 @@
 <th>ID</th>
 <th>Order</th>
 <th>Customer</th>
+<th>Employee ID</th> <!-- ✅ ADDED -->
 <th>Method</th>
 <th>Total</th>
 <th>Down</th>
@@ -149,7 +147,7 @@
 </tr>
 </thead>
 <tbody id="paymentTableBody">
-<tr><td colspan="10" class="text-center">Loading...</td></tr>
+<tr><td colspan="11" class="text-center">Loading...</td></tr> <!-- Adjust colspan to 11 -->
 </tbody>
 </table>
 </div>
@@ -165,8 +163,6 @@
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-
 <script src="payment.js"></script>
 </body>
 </html>
