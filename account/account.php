@@ -13,7 +13,11 @@ try {
 }
 
 $customers = $pdo->query("SELECT * FROM customer")->fetchAll(PDO::FETCH_ASSOC);
-$employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
+$employees = $pdo->query("
+    SELECT employee.*, users.username, users.user_id
+    FROM employee
+    JOIN users ON employee.user_id = users.user_id
+")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -92,13 +96,14 @@ $employees = $pdo->query("SELECT * FROM employee")->fetchAll(PDO::FETCH_ASSOC);
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th><th>First Name</th><th>Middle Initial</th><th>Last Name</th><th>Actions</th>
+                            <th>ID</th><th>Username</th><th>First Name</th><th>Middle Initial</th><th>Last Name</th><th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($employees as $e): ?>
                         <tr>
-                            <td><?= $e['employee_id'] ?></td>
+                            <td><?= $e['user_id'] ?></td>
+                            <td><?= htmlspecialchars($e['username']) ?></td>
                             <td><?= htmlspecialchars($e['first_name']) ?></td>
                             <td><?= htmlspecialchars($e['middle_initial']) ?></td>
                             <td><?= htmlspecialchars($e['last_name']) ?></td>
